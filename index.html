@@ -1,0 +1,3829 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checklist – Pleito de Benefícios Fiscais</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Source+Sans+3:wght@300;400;600;700&display=swap');
+
+  :root {
+    --navy: #001a33;
+    --navy-mid: #003d66;
+    --navy-light: #1a5b99;
+    --blue-accent: #3d5a80;
+    --gray-dark: #2c3e50;
+    --gray-mid: #5a6c7d;
+    --gray-light: #d4d9e0;
+    --gray-pale: #f0f3f7;
+    --white: #ffffff;
+    --gray: #6b7c8f;
+    --success: #2e7d52;
+    --danger: #a0251e;
+    --text: #1a2530;
+    --invest-es: #1a5c38;
+    --invest-es-light: #e8f5ee;
+    --sticky-progress-offset: 72px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html {
+    scroll-behavior: smooth;
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  body {
+    font-family: 'Source Sans 3', sans-serif;
+    background: linear-gradient(180deg, #f5f7fa 0%, #f3f5fa 100%);
+    color: var(--text);
+    min-height: 100vh;
+    position: relative;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      linear-gradient(90deg, rgba(0,26,51,0.01) 1px, transparent 1px),
+      linear-gradient(rgba(0,26,51,0.01) 1px, transparent 1px);
+    background-size: 28px 28px;
+    mask-image: linear-gradient(180deg, rgba(0,0,0,0.25), transparent 78%);
+    pointer-events: none;
+    z-index: -2;
+  }
+
+  /* ── HEADER ─────────────────────────────────────── */
+  header {
+    background: linear-gradient(180deg, #001a33 0%, #001a33 100%);
+    padding: 44px clamp(24px, 5vw, 56px) 18px;
+    border-bottom: none;
+    position: relative;
+    overflow: visible;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: none;
+    pointer-events: none;
+  }
+  header::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, rgba(255,255,255,0.02), transparent 35%, transparent 65%, rgba(61,90,128,0.02));
+    pointer-events: none;
+  }
+
+  .header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 28px;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 1;
+    padding: 0 clamp(24px, 5vw, 56px);
+  }
+
+  .header-main {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .header-brand-row {
+    display: flex;
+    align-items: center;
+    gap: clamp(16px, 2.8vw, 30px);
+  }
+
+  .header-title-wrap {
+    padding-left: 12px;
+  }
+
+  .oss-logo {
+    display: block;
+    width: auto;
+    max-width: 100%;
+  }
+
+  .oss-logo-header {
+    height: clamp(72px, 9vw, 108px);
+    margin-bottom: 0;
+    filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.2));
+  }
+
+  .header-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #3d5a80;
+    margin-bottom: 10px;
+    font-weight: 600;
+    padding: 8px 12px;
+    border: 1px solid rgba(61,90,128,0.25);
+    border-radius: 20px;
+    background: rgba(61,90,128,0.08);
+    backdrop-filter: blur(12px);
+  }
+
+  .header-label::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #3d5a80;
+    box-shadow: 0 0 0 5px rgba(61,90,128,0.16);
+  }
+
+  header h1 {
+    font-family: 'Manrope', sans-serif;
+    font-size: 40px;
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.15;
+    max-width: 720px;
+    text-wrap: balance;
+    letter-spacing: -0.015em;
+    text-shadow: 0 8px 18px rgba(0,0,0,0.18);
+  }
+
+  header h1 span { color: #3d5a80; }
+
+  .header-meta {
+    text-align: right;
+    color: #cfdae6;
+    font-size: 15px;
+    line-height: 1.8;
+    padding: 18px 20px;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+    backdrop-filter: blur(12px);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+  }
+  .header-meta strong { color: #dce8f5; font-weight: 700; }
+
+  .header-progress-sticky {
+    position: sticky;
+    top: 0;
+    z-index: 105;
+    padding: 16px clamp(24px, 5vw, 56px) 14px;
+    background: transparent;
+    border-top: 0px solid rgba(212, 221, 232, 0.48);
+    border-bottom: 0px solid rgba(212, 221, 232, 0.42);
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    overflow: hidden;
+  }
+
+  .header-progress-sticky::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: transparent;
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    mask-image: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 1) 0%,
+      rgba(0, 0, 0, 0.96) 52%,
+      rgba(0, 0, 0, 0.76) 74%,
+      rgba(0, 0, 0, 0.42) 88%,
+      rgba(0, 0, 0, 0.16) 96%,
+      transparent 100%
+    );
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 1) 0%,
+      rgba(0, 0, 0, 0.96) 52%,
+      rgba(0, 0, 0, 0.76) 74%,
+      rgba(0, 0, 0, 0.42) 88%,
+      rgba(0, 0, 0, 0.16) 96%,
+      transparent 100%
+    );
+    pointer-events: none;
+  }
+
+  .progress-bar-wrap {
+    margin-top: 0;
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 6px;
+    height: 6px;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+    border: none;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #324a69 0%, #3d5a80 50%, #6f86a3 100%);
+    width: 0%;
+    transition: width 0.4s ease;
+    border-radius: 6px;
+    box-shadow: 0 0 12px rgba(61,90,128,0.24);
+  }
+
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    font-size: 13px;
+    color: #95a9bf;
+    gap: 12px;
+    position: relative;
+    z-index: 1;
+  }
+  .progress-label span { color: #bccbdd; font-weight: 600; }
+
+  /* ── NAV TABS ─────────────────────────────────────── */
+  .tabs-wrap {
+    position: relative;
+    top: auto;
+    z-index: 90;
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin-top: 18px;
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    max-width: 100%;
+    backdrop-filter: none;
+    box-shadow: none;
+  }
+  .tab-btn {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid transparent;
+    color: #d4dde8;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    padding: 12px 18px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s ease, transform 0.2s ease;
+    border-radius: 12px;
+    box-shadow: none;
+  }
+  .tab-btn:hover {
+    color: #a7b8cb;
+    transform: translateY(-1px);
+    border-color: rgba(61,90,128,0.28);
+    background: rgba(61,90,128,0.12);
+  }
+  .tab-btn.active {
+    color: #ffffff;
+    background: linear-gradient(135deg, #3d5a80 0%, #324a69 100%);
+    border-color: rgba(255,255,255,0.22);
+  }
+
+  .ui-icon {
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+    vertical-align: middle;
+    flex-shrink: 0;
+  }
+
+  .tab-btn .ui-icon {
+    opacity: 0.8;
+  }
+
+  .tab-btn:hover .ui-icon { opacity: 1; }
+
+  /* ── MAIN ─────────────────────────────────────── */
+  main {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 34px 24px 110px;
+  }
+
+  .tab-panel { display: none; }
+  .tab-panel.active {
+    display: block;
+    animation: fadeSlideUp 0.45s ease;
+  }
+
+  .intro-box {
+    background: rgba(0,26,51,0.85);
+    border: none;
+    border-left: none;
+    border-radius: 16px;
+    padding: 22px 24px;
+    margin-bottom: 28px;
+    color: var(--white);
+    font-size: 15px;
+    line-height: 1.7;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  }
+  .intro-box strong { color: #9fb1c6; font-weight: 600; }
+
+  /* INVEST-ES banner */
+  .invest-banner {
+    background: linear-gradient(135deg, #174c30 0%, #1a5c38 54%, #246743 100%);
+    border: none;
+    border-left: none;
+    border-radius: 16px;
+    padding: 18px 22px;
+    margin-bottom: 24px;
+    color: #e8f5ee;
+    font-size: 15px;
+    line-height: 1.7;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+  .invest-banner strong { color: #a8e6c0; font-weight: 600; }
+
+  .invest-banner-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .invest-banner-title .ui-icon {
+    width: 16px;
+    height: 16px;
+    color: #a8e6c0;
+  }
+
+  /* ── SECTIONS ─────────────────────────────────────── */
+  .section {
+    margin-bottom: 28px;
+    border: none;
+    border-radius: 16px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: none;
+    box-shadow: 0 1px 8px rgba(0, 26, 51, 0.08);
+    transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+  }
+
+  .section:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 26, 51, 0.12);
+  }
+
+  .section.invest-es-section { border-color: #a8d8bc; }
+  .section.invest-es-section .section-header { background: var(--invest-es); }
+  .section.invest-es-section .section-header:hover { background: #1e6b40; }
+  .section.invest-es-section .section-num { background: #5dba82; color: #fff; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 20px 24px;
+    background: linear-gradient(135deg, #001a33 0%, #002d50 100%);
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.2s ease;
+  }
+  .section-header:hover { background: #002940; }
+
+  .section-num {
+    background: linear-gradient(135deg, #3d5a80 0%, #324a69 100%);
+    color: #ffffff;
+    width: 40px; height: 40px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    flex-shrink: 0;
+    box-shadow: none;
+  }
+
+  .section-title {
+    flex: 1;
+    color: var(--white);
+    font-family: 'Manrope', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+  }
+
+  .section-badge {
+    font-size: 13px;
+    color: #3d5a80;
+    background: rgba(61,90,128,0.12);
+    padding: 6px 10px;
+    border-radius: 999px;
+    white-space: nowrap;
+    border: 1px solid rgba(61,90,128,0.2);
+    font-weight: 600;
+  }
+  .invest-es-section .section-badge { color: #1a5c38; background: rgba(26,92,56,0.12); border-color: rgba(26,92,56,0.2); }
+
+  .section-toggle {
+    color: #3d5a80;
+    font-size: 18px;
+    transition: transform 0.3s;
+    flex-shrink: 0;
+  }
+  .invest-es-section .section-toggle { color: #1a5c38; }
+  .section.open .section-toggle { transform: rotate(180deg); }
+
+  .section-body { display: none; }
+  .section.open .section-body { display: block; }
+
+  /* ── SUBSECTIONS ─────────────────────────────────────── */
+  .subsection { border-bottom: 0px solid #f0ebe0; }
+  .subsection:last-child { border-bottom: none; }
+
+  .subsection-title {
+    padding: 14px 22px 8px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #3d5a80;
+    border-bottom: 1px solid #d4dce5;
+    background: linear-gradient(180deg, #f8fafb, #f3f6fa);
+  }
+  .invest-es-section .subsection-title { color: #1a5c38; background: #f5faf8; border-bottom-color: #d4e8de; }
+
+  /* ── ITEMS ─────────────────────────────────────── */
+  .item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px 24px;
+    border-bottom: 0px solid #f5f1e8;
+    transition: background 0.18s ease, transform 0.18s ease;
+    cursor: pointer;
+  }
+  .item:last-child { border-bottom: none; }
+  .item:hover {
+    background: linear-gradient(90deg, rgba(245,237,207,0.42), rgba(255,255,255,0.92));
+  }
+  .item.checked {
+    background: linear-gradient(90deg, rgba(232,245,238,0.9), rgba(255,255,255,0.92));
+  }
+  .item.checked .item-text { color: var(--success); text-decoration: line-through; text-decoration-color: rgba(46,125,82,0.4); }
+
+  .checkbox {
+    width: 20px; height: 20px;
+    border: 2px solid #a0b1c4;
+    border-radius: 6px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+    background: #fff;
+  }
+  .item.checked .checkbox { background: #3d5a80; border-color: #3d5a80; }
+  .checkbox-tick { color: white; font-size: 13px; display: none; }
+  .item.checked .checkbox-tick { display: block; }
+
+  .item-content { flex: 1; }
+  .item-text { font-size: 15px; line-height: 1.6; color: #2a3a4a; }
+  .item-ref {
+    font-size: 13px;
+    color: var(--gray);
+    margin-top: 5px;
+    font-style: italic;
+  }
+  .item-ref strong { color: #6b7e90; font-style: normal; font-weight: 600; }
+
+  /* ── TABLE ITEMS (INVEST-ES) ─────────────────────────────────────── */
+  .item-table {
+    padding: 16px 22px 20px;
+    border-bottom: 0px solid #f5f1e8;
+    background: linear-gradient(180deg, #f8fdf9, #f3faf5);
+  }
+  .item-table table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+    margin-top: 10px;
+    overflow: hidden;
+    border-radius: 14px;
+  }
+  .item-table th {
+    background: var(--invest-es);
+    color: #fff;
+    padding: 10px 12px;
+    text-align: left;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.4px;
+  }
+  .item-table td {
+    padding: 10px 12px;
+    border: 1px solid #c8e8d4;
+    color: #2a3a4a;
+    background: #fff;
+  }
+  .item-table tr:nth-child(even) td { background: #f0faf5; }
+
+  /* ── EDITABLE TABLE CELLS ─────────────────────────── */
+  .item-table td[contenteditable] {
+    cursor: text;
+    outline: none;
+    transition: background 0.15s, box-shadow 0.15s;
+    min-width: 60px;
+    white-space: pre-wrap;
+  }
+  .item-table td[contenteditable]:empty::before {
+    content: attr(data-placeholder);
+    color: #aab8c4;
+    pointer-events: none;
+    font-style: italic;
+  }
+  .item-table td[contenteditable]:hover {
+    background: #e8f7ee !important;
+    box-shadow: inset 0 0 0 1.5px #7ecba0;
+  }
+  .item-table td[contenteditable]:focus {
+    background: #ffffff !important;
+    box-shadow: inset 0 0 0 2px #1a5c38;
+    border-color: #1a5c38;
+  }
+  .item-table-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--invest-es);
+    margin-bottom: 4px;
+  }
+
+  .item-table-label .ui-icon {
+    width: 14px;
+    height: 14px;
+    color: currentColor;
+  }
+
+  /* ── TAGS ─────────────────────────────────────── */
+  .tag {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 3px;
+    margin-right: 5px;
+    vertical-align: middle;
+    border: 1px solid rgba(0, 26, 51, 0.06);
+  }
+  .tag-fed { background: #e8eef6; color: #2f4f75; }
+  .tag-est { background: #edf3f9; color: #4f759f; }
+  .tag-mun { background: #f2f7fc; color: #7396bd; }
+  .tag-crit { background: #faece9; color: #bf4a42; }
+  .tag-invest { background: #e3f3e9; color: #316b49; }
+  .tag-doc { background: #f0ebfa; color: #6647a6; }
+
+  /* ── LEGEND ─────────────────────────────────────── */
+  .legend {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+    padding: 16px 18px;
+    background: rgba(255,255,255,0.8);
+    border: 0px solid #e8dfc8;
+    border-radius: 16px;
+    font-size: 14px;
+    color: #4a5a68;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  }
+  .legend-item { display: flex; align-items: center; gap: 6px; }
+
+  /* ── FOOTER ─────────────────────────────────────── */
+  .footer-actions {
+    background: rgba(0, 26, 51, 0.95);
+     border-top: 1px solid rgba(255,255,255,0.07);
+    padding: 16px clamp(18px, 4vw, 32px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.12);
+     margin-top: 32px;
+  }
+  .footer-info {
+    color: #91a7bc;
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .footer-stats {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    line-height: 1.3;
+  }
+  .footer-info strong { color: #9fb1c6; font-weight: 700; }
+  .footer-dev { font-size: 14px; color: #6f879b; line-height: 1.3; }
+
+  .footer-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 12px;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    cursor: pointer;
+    transition: all 0.2s ease, transform 0.2s ease;
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn-gold { background: #3d5a80; color: #ffffff; }
+  .btn-gold:hover { background: #324a69; }
+  .btn-outline { background: transparent; color: #3d5a80; border: 1px solid #3d5a80; }
+  .btn-outline:hover { background: rgba(61,90,128,0.1); }
+  .btn-green { background: #2e7d52; color: #fff; }
+  .btn-green:hover { background: #3a9966; }
+
+  @keyframes fadeSlideUp {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (max-width: 860px) {
+    header {
+      padding: 38px 22px 18px;
+    }
+
+    .header-progress-sticky {
+      padding: 14px 22px 12px;
+    }
+
+    .header-meta {
+      width: 100%;
+      text-align: left;
+    }
+
+    .header-brand-row {
+      align-items: flex-start;
+      gap: 14px;
+    }
+
+    .header-title-wrap {
+      padding-left: 6px;
+    }
+
+    .oss-logo-header {
+      height: 60px;
+    }
+
+    main {
+      padding: 24px 16px 72px;
+    }
+
+    .section-header {
+      padding: 16px 18px;
+      flex-wrap: wrap;
+    }
+
+    .section-badge {
+      order: 3;
+    }
+
+    .progress-label {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .oss-logo-header {
+      height: 52px;
+    }
+
+    .tabs-wrap {
+      margin-top: 14px;
+      gap: 10px;
+    }
+
+    .header-progress-sticky {
+      padding: 12px 12px 10px;
+    }
+
+    .tab-btn {
+      padding: 11px 14px;
+    }
+
+    .section {
+      border-radius: 18px;
+    }
+
+    .subsection-title,
+    .item,
+    .item-table {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+
+    .footer-actions {
+      justify-content: center;
+    }
+
+    .progress-label {
+      gap: 4px;
+    }
+
+    .footer-info,
+    .footer-buttons {
+      width: 100%;
+      justify-content: center;
+      text-align: center;
+    }
+
+  }
+
+  /* ── PRINT ─────────────────────────────────────── */
+  @media print {
+    header, .tabs-wrap, .header-progress-sticky { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    .footer-actions, .tabs-wrap, .header-progress-sticky { display: none; }
+    header { padding: 22px 20px 8px; }
+    .oss-logo-header { height: 52px; }
+    .tab-panel { display: block !important; }
+    .section-body { display: block !important; }
+    .section-toggle { display: none; }
+    body {
+      padding-bottom: 0;
+      background: #fff;
+    }
+    body::before { display: none; }
+    .section,
+    .legend,
+    .intro-box,
+    .invest-banner,
+    .header-meta {
+      box-shadow: none;
+      backdrop-filter: none;
+    }
+    .section { page-break-inside: avoid; }
+  }
+
+  /* ── ITEM NOTE AREAS (campos de resposta editável) ──────────── */
+  .item-note {
+    margin-top: 10px;
+    padding: 10px 14px;
+    background: #f5f8fc;
+    border: 1.5px solid #b0c4d8;
+    border-radius: 10px;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .item-note:focus-within {
+    border-color: #3d5a80;
+    background: #fff;
+  }
+  .invest-es-section .item-note { border-color: #a0d4b8; background: #f5fbf7; }
+  .invest-es-section .item-note:focus-within { border-color: #1a5c38; background: #fff; }
+
+  .item-note-label {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #7a90a8;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .invest-es-section .item-note-label { color: #5a8c70; }
+
+  .item-note textarea {
+    width: 100%;
+    box-sizing: border-box;
+    border: none;
+    background: transparent;
+    resize: none;
+    overflow: hidden;
+    font-family: inherit;
+    font-size: 15px;
+    color: #2a3a4a;
+    line-height: 1.6;
+    outline: none;
+    padding: 0;
+    min-height: 38px;
+  }
+  .item-note textarea::placeholder { color: #aab8c4; font-style: italic; }
+
+  .item-note-fields {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap: 8px;
+  }
+  .item-note-field label {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: #7a90a8;
+    margin-bottom: 3px;
+  }
+  .invest-es-section .item-note-field label { color: #5a8c70; }
+  .item-note-field input[type="text"],
+  .item-note-field textarea {
+    width: 100%;
+    box-sizing: border-box;
+    background: rgba(255,255,255,0.75);
+    border: 1px solid #cdd8e5;
+    border-radius: 6px;
+    padding: 6px 9px;
+    font-family: inherit;
+    font-size: 14.5px;
+    color: #2a3a4a;
+    outline: none;
+    transition: border-color 0.15s;
+    resize: none;
+    overflow: hidden;
+  }
+  .item-note-field textarea {
+    min-height: 32px;
+  }
+  .item-note-field input[type="text"]::placeholder,
+  .item-note-field textarea::placeholder { color: #aab8c4; font-style: italic; }
+  .item-note-field input[type="text"]:focus,
+  .item-note-field textarea:focus { border-color: #3d5a80; background: #fff; }
+  .invest-es-section .item-note-field input[type="text"]:focus,
+  .invest-es-section .item-note-field textarea:focus { border-color: #1a5c38; }
+
+  /* ── MODAL: Envio por Email ─────────────────────────────────── */
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+  }
+  .modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 26, 51, 0.7);
+    backdrop-filter: blur(4px);
+    cursor: pointer;
+  }
+  .modal-content {
+    position: relative;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0, 26, 51, 0.3);
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+  }
+  .modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 24px 16px;
+    border-bottom: 1px solid #eee;
+  }
+  .modal-header h2 {
+    margin: 0;
+    font-size: 18px;
+    color: #001a33;
+    font-weight: 700;
+  }
+  .modal-close {
+    background: none;
+    border: none;
+    color: #999;
+    font-size: 28px;
+    cursor: pointer;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.15s;
+  }
+  .modal-close:hover { color: #333; }
+  .modal-body {
+    padding: 20px 24px;
+    flex: 1;
+  }
+  .modal-form-group {
+    margin-bottom: 16px;
+  }
+  .modal-form-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: #7a90a8;
+    margin-bottom: 6px;
+  }
+  .modal-form-group input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 12px;
+    border: 1.5px solid #cdd8e5;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 14px;
+    color: #2a3a4a;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .modal-form-group input:focus {
+    border-color: #3d5a80;
+    box-shadow: 0 0 0 3px rgba(61, 90, 128, 0.1);
+  }
+  .modal-note {
+    padding: 12px 14px;
+    background: #f0f8ff;
+    border-left: 3px solid #3d5a80;
+    border-radius: 6px;
+    font-size: 15px;
+    color: #2a3a4a;
+    line-height: 1.5;
+    margin: 16px 0;
+  }
+  .modal-note strong { color: #3d5a80; }
+  .modal-progress {
+    padding: 16px;
+    background: #f5f5f5;
+    border-radius: 8px;
+    margin: 16px 0;
+  }
+  .progress-bar {
+    width: 100%;
+    height: 6px;
+    background: #ddd;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #3d5a80, #2c4a68);
+    width: 0%;
+    transition: width 0.3s;
+  }
+  .progress-text {
+    font-size: 14px;
+    color: #666;
+    text-align: center;
+  }
+  .modal-footer {
+    display: flex;
+    gap: 10px;
+    padding: 16px 24px;
+    border-top: 1px solid #eee;
+    justify-content: flex-end;
+  }
+  .btn-submit {
+    background: linear-gradient(135deg, #1a5c38 0%, #145030 100%);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(26, 92, 56, 0.3);
+  }
+  .btn-submit:active { transform: translateY(0); }
+
+  /* ── ATTACH ZONES (itens com DOCUMENTO) ──────────────────── */
+  .item-attach {
+    margin-top: 10px;
+    padding: 10px 14px;
+    background: #f5f1fc;
+    border: 1.5px solid #c0a8e0;
+    border-radius: 10px;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .item-attach:focus-within,
+  .item-attach.drag-over {
+    border-color: #6647a6;
+    background: #ede8f8;
+  }
+  .item-attach-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .item-attach-label {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #6647a6;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .item-attach-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #6647a6;
+    background: rgba(102,71,166,0.10);
+    border: 1px solid rgba(102,71,166,0.30);
+    border-radius: 6px;
+    padding: 4px 10px;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+    white-space: nowrap;
+    user-select: none;
+  }
+  .item-attach-btn:hover { background: rgba(102,71,166,0.18); border-color: rgba(102,71,166,0.55); }
+  .item-attach-btn svg { flex-shrink: 0; }
+  .item-attach-files {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+  }
+  .item-attach-files:empty { margin-top: 0; }
+  .item-attach-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 13.5px;
+    color: #3a2870;
+    background: rgba(102,71,166,0.10);
+    border: 1px solid rgba(102,71,166,0.25);
+    border-radius: 20px;
+    padding: 4px 10px 4px 8px;
+    max-width: 280px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: background 0.12s;
+  }
+  .item-attach-pill.ghost {
+    opacity: 0.55;
+    border-style: dashed;
+  }
+  .item-attach-pill svg { flex-shrink: 0; color: #6647a6; }
+  .item-attach-pill-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .item-attach-pill-size {
+    font-size: 12px;
+    color: #8870b8;
+    flex-shrink: 0;
+  }
+  .item-attach-remove {
+    flex-shrink: 0;
+    width: 14px;
+    height: 14px;
+    border: none;
+    background: none;
+    color: #9a7cc8;
+    cursor: pointer;
+    padding: 0;
+    font-size: 13px;
+    line-height: 1;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.12s, background 0.12s;
+  }
+  .item-attach-remove:hover { color: #bf4a42; background: rgba(191,74,66,0.12); }
+  .item-attach-drop-hint {
+    font-size: 12.5px;
+    color: #a090c0;
+    margin-top: 6px;
+    font-style: italic;
+  }
+  @media print {
+    .item-attach-btn, .item-attach-remove, .item-attach-drop-hint { display: none; }
+    .item-attach { border-style: solid; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <div class="header-main">
+      <div class="header-brand-row">
+        <img class="oss-logo oss-logo-header" src="logo/logotipo-oss-assessoria-contabil-2020-light.png" alt="OSS Assessoria" loading="lazy" decoding="async">
+        <div class="header-title-wrap">
+          <div class="header-label">Gestão Tributária &amp; Compliance Fiscal</div>
+          <h1>Checklist para <span>Pleito de</span><br>Benefícios Fiscais</h1>
+        </div>
+      </div>
+
+      <!-- TABS -->
+      <div class="tabs-wrap">
+        <button class="tab-btn active" onclick="switchTab('geral')"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6.75h10.25"></path><path d="M9 12h10.25"></path><path d="M9 17.25h10.25"></path><path d="M4.75 6.75h.5"></path><path d="M4.75 12h.5"></path><path d="M4.75 17.25h.5"></path></svg>Checklist Geral</button>
+        <button class="tab-btn" onclick="switchTab('invest')"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.75 19.5 7.5v9L12 20.25 4.5 16.5v-9L12 3.75Z"></path><path d="M8.75 12h6.5"></path><path d="M12 8.75v6.5"></path></svg>INVEST-ES (Específico)</button>
+      </div>
+    </div>
+    <div class="header-meta">
+      <strong>Referência Normativa Atualizada</strong><br>
+      Competência: Abril / 2026<br>
+      Esferas: Federal · Estadual · Municipal<br>
+      Estados: ES · BA · SP · MG
+    </div>
+  </div>
+</header>
+
+<div class="header-progress-sticky">
+  <div class="progress-bar-wrap">
+    <div class="progress-bar-fill" id="progressFill"></div>
+  </div>
+  <div class="progress-label">
+    <span>Progresso do preenchimento</span>
+    <span id="progressText">0 de 0 itens concluídos</span>
+  </div>
+</div>
+
+<main>
+
+<!-- ══════════════════════════════════════════════════ -->
+<!-- ABA 1 — CHECKLIST GERAL -->
+<!-- ══════════════════════════════════════════════════ -->
+<div class="tab-panel active" id="tab-geral">
+
+  <div class="intro-box">
+    <strong>Instrução de uso:</strong> Este checklist sistematiza as etapas documentais, societárias, fiscais e processuais necessárias ao pleito de benefícios fiscais perante os entes tributantes (União, Estados e Municípios). Cada item indica a base legal de referência. A aba <em>INVEST-ES</em> contempla o checklist específico do Programa de Benefícios Fiscais do Espírito Santo. A legislação indicada está vigente em abril/2026.
+  </div>
+
+  <div class="legend">
+    <div class="legend-item"><span class="tag tag-fed">FEDERAL</span> Competência RFB/União</div>
+    <div class="legend-item"><span class="tag tag-est">ESTADUAL</span> Competência SEFAZ</div>
+    <div class="legend-item"><span class="tag tag-mun">MUNICIPAL</span> Competência SMF</div>
+    <div class="legend-item"><span class="tag tag-crit">CRÍTICO</span> Item essencial</div>
+    <div class="legend-item"><span class="tag tag-doc">DOCUMENTO</span> Exige arquivo digital</div>
+  </div>
+
+  <!-- SEÇÃO 1 -->
+  <div class="section open" id="sec1">
+    <div class="section-header" onclick="toggleSection('sec1')">
+      <div class="section-num">1</div>
+      <div class="section-title">Enquadramento Prévio e Elegibilidade ao Benefício</div>
+      <div class="section-badge">8 itens</div>
+      <div class="section-toggle">▼</div>
+    </div>
+    <div class="section-body">
+      <div class="subsection">
+        <div class="subsection-title">Identificação do Benefício Pleiteado</div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-crit">CRÍTICO</span> Identificar com precisão o tipo de benefício fiscal almejado: isenção, redução de base de cálculo, alíquota diferenciada, crédito presumido, diferimento, suspensão ou remissão.</div>
+            <div class="item-ref"><strong>Base legal:</strong> CTN, arts. 175 a 182; LC nº 160/2017</div>
+            <div class="item-note">
+              <div class="item-note-label">✏ Benefício(s) identificado(s)</div>
+              <textarea rows="2" data-note-key="n_beneficio_tipo" placeholder="Ex.: Crédito presumido de ICMS — Convênio ICMS 00/0000; Redução de base de cálculo — RICMS/ES art. X…"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-crit">CRÍTICO</span> Verificar se o benefício decorre de convênio CONFAZ (para ICMS) ou ato normativo federal/municipal específico, confirmando sua vigência atual.</div>
+            <div class="item-ref"><strong>Base legal:</strong> LC nº 24/1975; RICMS de cada estado; Convênios ICMS vigentes (CONFAZ)</div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text">Confirmar se a empresa enquadra-se no Simples Nacional, Lucro Presumido ou Lucro Real, pois o regime tributário pode vedar ou compatibilizar o gozo do benefício.</div>
+            <div class="item-ref"><strong>Base legal:</strong> LC nº 123/2006, art. 24; RIR/2018 (Decreto nº 9.580/2018)</div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text">Verificar se o NCM/CNAE da empresa está expressamente contemplado na norma concessora do benefício.</div>
+            <div class="item-ref"><strong>Base legal:</strong> Tabela TIPI (Decreto nº 11.158/2022); Convênio ICMS correspondente</div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-fed">FEDERAL</span> Avaliar impacto da EC nº 132/2023 e LC nº 214/2024 (Reforma Tributária) sobre o benefício pleiteado — verificar prazo de transição ou extinção programada.</div>
+            <div class="item-ref"><strong>Base legal:</strong> EC 132/2023; LC 214/2024; período transitório 2026–2032</div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-fed">FEDERAL</span> Verificar se o benefício de ICMS foi mantido no âmbito do IBS durante o período de transição 2026–2032 (LC 214/2024, arts. 340 e ss.).</div>
+            <div class="item-ref"><strong>Base legal:</strong> LC 214/2024, arts. 340–360; EC 132/2023, art. 15 (ADCT)</div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-fed">FEDERAL</span> Verificar se o pleito de CBS está sujeito ao regime especial previsto na LC 214/2024 para setores específicos (arts. 162 a 230).</div>
+            <div class="item-ref"><strong>Base legal:</strong> LC 214/2024, arts. 162 a 230 (regimes específicos CBS/IBS)</div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text">Realizar análise custo-benefício documentada, evidenciando a viabilidade e o impacto financeiro do benefício no fluxo tributário — laudo firmado por contador habilitado (CRC).</div>
+            <div class="item-ref"><strong>Boas práticas:</strong> NBC CTG 2000; Resolução CFC nº 1.418/2012</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEÇÃO 2 -->
+  <div class="section" id="sec2">
+    <div class="section-header" onclick="toggleSection('sec2')">
+      <div class="section-num">2</div>
+      <div class="section-title">Regularidade Fiscal e Certidões</div>
+      <div class="section-badge">10 itens</div>
+      <div class="section-toggle">▼</div>
+    </div>
+    <div class="section-body">
+      <div class="subsection">
+        <div class="subsection-title">Certidões Federais</div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-fed">FEDERAL</span><span class="tag tag-crit">CRÍTICO</span><span class="tag tag-doc">DOCUMENTO</span> Certidão Negativa de Débitos Relativos aos Tributos Federais e à Dívida Ativa da União (CND/CPEN) — validade de 180 dias.</div>
+            <div class="item-ref"><strong>Base legal:</strong> CTN, art. 205; Portaria RFB/PGFN nº 1.751/2014</div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-fed">FEDERAL</span><span class="tag tag-doc">DOCUMENTO</span> Certidão de Regularidade do FGTS (CRF) — emitida pela Caixa Econômica Federal, validade de 30 dias.</div>
+            <div class="item-ref"><strong>Base legal:</strong> Lei nº 8.036/1990, art. 27, alínea a</div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-fed">FEDERAL</span> Comprovante de regularidade das contribuições previdenciárias (INSS) — verificar mediante consulta ao CNIS/eSocial.</div>
+            <div class="item-ref"><strong>Base legal:</strong> Lei nº 8.212/1991, art. 47; IN RFB nº 971/2009</div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-fed">FEDERAL</span> Confirmar inexistência de débitos de PIS/COFINS, CSLL, IRPJ, IPI e demais tributos federais administrados pela RFB.</div>
+            <div class="item-ref"><strong>Base legal:</strong> Lei nº 9.430/1996; Lei nº 10.833/2003; Lei nº 10.637/2002</div>
+          </div>
+        </div>
+      </div>
+      <div class="subsection">
+        <div class="subsection-title">Certidões Estaduais</div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-est">ESTADUAL</span><span class="tag tag-crit">CRÍTICO</span><span class="tag tag-doc">DOCUMENTO</span> Certidão Negativa de Débitos Estaduais (ICMS e demais tributos estaduais) — em cada estado de operação (ES, BA, SP, MG).</div>
+            <div class="item-ref"><strong>Base legal:</strong> RICMS/ES (Dec. 1.090-R/2002); RICMS/BA (Dec. 13.780/2012); RICMS/SP (Dec. 45.490/2000); RICMS/MG (Dec. 43.080/2002)</div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-est">ESTADUAL</span> Regularidade da inscrição estadual em todos os estados de atuação — confirmar atividade e enquadramento no CAD/ICMS.</div>
+            <div class="item-ref"><strong>Base legal:</strong> Legislação estadual de cadastro de cada SEFAZ</div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-est">ESTADUAL</span> Verificar ausência de AINF em aberto ou parcelamentos em inadimplência perante as SEFAZs estaduais.</div>
+            <div class="item-ref"><strong>Base legal:</strong> RICMS de cada estado — contencioso administrativo fiscal</div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-est">ESTADUAL</span><span class="tag tag-doc">DOCUMENTO</span> Sintegra atualizado (Sistema Integrado de Informações sobre Operações Interestaduais com Mercadorias e Serviços) — utilizado para comprovação da movimentação de operações.</div>
+            <div class="item-ref"><strong>Base legal:</strong> Convênio ICMS nº 57/1995; Portaria CAT (SP), SEFAZ (ES/BA/MG) aplicável</div>
+          </div>
+        </div>
+      </div>
+      <div class="subsection">
+        <div class="subsection-title">Certidões Municipais e Trabalhistas</div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-mun">MUNICIPAL</span><span class="tag tag-doc">DOCUMENTO</span> Certidão Negativa de Débitos Municipais — ISS, IPTU e demais taxas nos municípios de estabelecimento.</div>
+            <div class="item-ref"><strong>Base legal:</strong> LC nº 116/2003; Códigos Tributários Municipais aplicáveis</div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-doc">DOCUMENTO</span> Certidão Negativa de Débitos Trabalhistas (CNDT) — emitida pelo TST, validade de 180 dias.</div>
+            <div class="item-ref"><strong>Base legal:</strong> Lei nº 12.440/2011; CLT, art. 642-A</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEÇÃO 3 -->
+  <div class="section" id="sec3">
+    <div class="section-header" onclick="toggleSection('sec3')">
+      <div class="section-num">3</div>
+      <div class="section-title">Documentação Societária e Cadastral</div>
+      <div class="section-badge">8 itens</div>
+      <div class="section-toggle">▼</div>
+    </div>
+    <div class="section-body">
+      <div class="subsection">
+        <div class="subsection-title">Atos Constitutivos e Registros</div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-crit">CRÍTICO</span><span class="tag tag-doc">DOCUMENTO</span> Contrato Social ou Estatuto Social consolidado, com a última alteração registrada na Junta Comercial ou Cartório competente.</div>
+            <div class="item-ref"><strong>Base legal:</strong> CC, art. 997 e ss.; Lei nº 6.404/1976 (S/A)</div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-doc">DOCUMENTO</span> Cartão CNPJ com situação ativa e CNAE(s) compatíveis com a atividade objeto do benefício fiscal pleiteado.</div>
+            <div class="item-ref"><strong>Base legal:</strong> IN RFB nº 1.863/2018; Resolução CGSN nº 166/2022</div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-doc">DOCUMENTO</span> Alvará de Funcionamento Municipal atualizado para cada estabelecimento — confirmar atividade licenciada compatível com o benefício.</div>
+            <div class="item-ref"><strong>Base legal:</strong> Lei nº 13.874/2019 (Lei da Liberdade Econômica); legislação municipal aplicável</div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text">Procuração com poderes específicos para pleito de benefícios fiscais, caso o requerente não seja o sócio-administrador — reconhecida em cartório ou via assinatura digital (ICP-Brasil).</div>
+            <div class="item-ref"><strong>Base legal:</strong> CTN, art. 134; CC, arts. 653 a 692; Lei nº 14.063/2020 (assinatura eletrônica)</div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-doc">DOCUMENTO</span> Certificado Digital (e-CNPJ) do tipo A1 ou A3 — necessário para assinatura de requerimentos eletrônicos junto à SEFAZ-ES, RFB e demais órgãos.</div>
+            <div class="item-ref"><strong>Base legal:</strong> MP nº 2.200-2/2001; IN RFB nº 1.995/2020; Resolução ITI nº 145/2017</div>
+          </div>
+        </div>
+      </div>
+      <div class="subsection">
+        <div class="subsection-title">Documentação Contábil e Fiscal</div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-crit">CRÍTICO</span><span class="tag tag-doc">DOCUMENTO</span> Balanço Patrimonial e DRE dos dois últimos exercícios, assinados por contador habilitado (CRC).</div>
+            <div class="item-ref"><strong>Base legal:</strong> Lei nº 6.404/1976, arts. 176 a 188; NBC TG 26 (CVM/CFC)</div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text">SPED Contábil (ECD), SPED Fiscal (EFD-ICMS/IPI e EFD-Contribuições) e ECF — transmitidos e sem pendências junto à RFB.</div>
+            <div class="item-ref"><strong>Base legal:</strong> IN RFB nº 1.774/2017 (ECD); IN RFB nº 1.422/2013; Ato Cotepe ICMS nº 44/2018</div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text">Demonstrativo de apuração do ICMS com memória de cálculo detalhada — identificação de créditos (entradas), débitos (saídas) e saldo credor/devedor por período.</div>
+            <div class="item-ref"><strong>Base legal:</strong> CTN, art. 150; RICMS/ES, arts. pertinentes à apuração do imposto</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEÇÃO 4 – ICMS ESTADUAL -->
+  <div class="section" id="sec4">
+    <div class="section-header" onclick="toggleSection('sec4')">
+      <div class="section-num">4</div>
+      <div class="section-title">Benefícios de ICMS por Estado (ES · BA · SP · MG)</div>
+      <div class="section-badge">12 itens</div>
+      <div class="section-toggle">▼</div>
+    </div>
+    <div class="section-body">
+      <div class="subsection">
+        <div class="subsection-title">Requisitos Gerais — Todos os Estados</div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-est">ESTADUAL</span><span class="tag tag-crit">CRÍTICO</span> Confirmar que o benefício está amparado em Convênio CONFAZ ou que é unilateral nos termos da LC nº 160/2017 e Convênio ICMS nº 190/2017 (regularização de benefícios unilaterais).</div>
+            <div class="item-ref"><strong>Base legal:</strong> LC nº 24/1975; LC nº 160/2017; Conv. ICMS 190/2017; STF RE 628.075/RS (Tema 490)</div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-est">ESTADUAL</span> Verificar existência de contrapartida obrigatória — geração/manutenção de empregos, investimentos mínimos ou metas de produção — e documentar o cumprimento com planilha de acompanhamento.</div>
+            <div class="item-ref"><strong>Base legal:</strong> Lei estadual concessora; STF ADI 1.179; RE 851.421 (Tema 817)</div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-est">ESTADUAL</span> Protocolar requerimento na SEFAZ com indicação expressa do dispositivo legal, período de fruição e memória de cálculo da redução/crédito estimado.</div>
+            <div class="item-ref"><strong>Base legal:</strong> RICMS estadual; Portaria SEFAZ de cada estado</div>
+          </div>
+        </div>
+      </div>
+      <div class="subsection">
+        <div class="subsection-title">Espírito Santo (ES) — INVEST-ES e RICMS</div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-est">ESTADUAL</span><span class="tag tag-invest">INVEST-ES</span> Verificar elegibilidade ao Programa INVEST-ES — Lei ES nº 10.568/2016 e Decreto ES nº 4.032-R/2017. Para checklist completo, utilizar a aba "INVEST-ES".</div>
+            <div class="item-ref"><strong>Base legal:</strong> Lei ES nº 10.568/2016; Dec. ES nº 4.032-R/2017; RICMS/ES (Dec. 1.090-R/2002)</div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-est">ESTADUAL</span> Verificar crédito presumido de ICMS no ES — confirmar NCM nos Anexos do RICMS/ES (Isenções, Reduções de BC, Créditos Presumidos) e necessidade de regime especial formal.</div>
+            <div class="item-ref"><strong>Base legal:</strong> RICMS/ES, Anexos I, II e III</div>
+          </div>
+        </div>
+      </div>
+      <div class="subsection">
+        <div class="subsection-title">Bahia (BA)</div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-est">ESTADUAL</span> Avaliar benefícios do DESENVOLVE (Programa de Desenvolvimento Industrial da Bahia) — Lei BA nº 7.980/2001 e Dec. BA nº 8.205/2002.</div>
+            <div class="item-ref"><strong>Base legal:</strong> Lei BA nº 7.980/2001; Dec. BA nº 8.205/2002; RICMS/BA (Dec. 13.780/2012)</div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-est">ESTADUAL</span> Verificar isenções e reduções de ICMS previstas nos Anexos I e III do RICMS/BA, com base no NCM e CNAE.</div>
+            <div class="item-ref"><strong>Base legal:</strong> RICMS/BA, Anexos I e III; Convênios ICMS aplicáveis</div>
+          </div>
+        </div>
+      </div>
+      <div class="subsection">
+        <div class="subsection-title">São Paulo (SP) e Minas Gerais (MG)</div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-est">ESTADUAL</span> SP — Verificar créditos outorgados/presumidos no RICMS/SP (Dec. 45.490/2000) e Portaria CAT do segmento. Verificar TATE (Termo de Acordo de Tributação Específica) quando aplicável.</div>
+            <div class="item-ref"><strong>Base legal:</strong> RICMS/SP (Dec. 45.490/2000); Portarias CAT/SEFAZ-SP pertinentes</div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-est">ESTADUAL</span> MG — Verificar benefícios no Anexo IV do RICMS/MG e programas PRODECOM/PRODEMGE. Avaliar necessidade de TARE (Termo de Acordo de Regime Especial) junto à SEFAZ-MG.</div>
+            <div class="item-ref"><strong>Base legal:</strong> RICMS/MG (Dec. 43.080/2002), Anexo IV; Lei MG nº 13.196/1999</div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-est">ESTADUAL</span> MG — Verificar licença ambiental e regularidade perante o COPAM/SEMAD como condicionante ao benefício fiscal, quando exigido pela legislação estadual.</div>
+            <div class="item-ref"><strong>Base legal:</strong> Lei MG nº 14.940/2003; DN COPAM nº 74/2004; RICMS/MG aplicável</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEÇÃO 5 – PIS/COFINS -->
+  <div class="section" id="sec5">
+    <div class="section-header" onclick="toggleSection('sec5')">
+      <div class="section-num">5</div>
+      <div class="section-title">Benefícios de PIS/COFINS — Esfera Federal</div>
+      <div class="section-badge">8 itens</div>
+      <div class="section-toggle">▼</div>
+    </div>
+    <div class="section-body">
+      <div class="subsection">
+        <div class="subsection-title">Não-Incidência, Alíquota Zero e Isenção</div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-fed">FEDERAL</span><span class="tag tag-crit">CRÍTICO</span> Confirmar se o produto/serviço está sujeito à alíquota zero, isenção ou não-incidência de PIS/COFINS com base nas Leis nº 10.637/2002 e 10.833/2003 e legislação setorial.</div>
+            <div class="item-ref"><strong>Base legal:</strong> Lei nº 10.637/2002; Lei nº 10.833/2003; IN RFB nº 2.121/2022</div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-fed">FEDERAL</span> Verificar possibilidade de creditamento de PIS/COFINS não-cumulativos — confirmar se a empresa está no Lucro Real e se as aquisições configuram insumos passíveis de crédito (Tema 779 STJ).</div>
+            <div class="item-ref"><strong>Base legal:</strong> STJ REsp nº 1.221.170/PR (Tema 779); IN RFB nº 2.121/2022, arts. 176 a 174</div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-fed">FEDERAL</span> Avaliar precedentes favoráveis — STF RE 574.706 (exclusão do ICMS da base de PIS/COFINS) — para pleito de restituição ou compensação de indébito com aplicação da SELIC.</div>
+            <div class="item-ref"><strong>Base legal:</strong> STF RE 574.706 (repercussão geral); modulação: marco temporal 15/03/2017; CTN, arts. 165 a 169; IN RFB nº 2.055/2021</div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-fed">FEDERAL</span> Para setor agropecuário/agroindustrial — verificar suspensão/alíquota zero de PIS/COFINS nas vendas para produtor rural PJ e cooperativas (Lei nº 10.925/2004).</div>
+            <div class="item-ref"><strong>Base legal:</strong> Lei nº 10.925/2004; IN RFB nº 1.911/2019</div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-fed">FEDERAL</span> Verificar elegibilidade ao REPORTO, RECAP, REIDI ou outros regimes especiais setoriais que suspendam ou isentem PIS/COFINS.</div>
+            <div class="item-ref"><strong>Base legal:</strong> Lei nº 11.033/2004 (REPORTO); Lei nº 11.196/2005 (RECAP); Lei nº 11.488/2007 (REIDI)</div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-fed">FEDERAL</span> Calcular crédito extemporâneo com SELIC acumulada e elaborar o demonstrativo de compensação (PER/DCOMP) via e-CAC.</div>
+            <div class="item-ref"><strong>Base legal:</strong> Lei nº 9.430/1996, art. 74; IN RFB nº 2.055/2021; STJ REsp nº 1.767.945</div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-fed">FEDERAL</span> Monitorar impacto da LC 214/2024 (CBS) sobre os benefícios atuais de PIS/COFINS — verificar regimes de transição para o novo tributo federal (período 2026-2027).</div>
+            <div class="item-ref"><strong>Base legal:</strong> LC 214/2024, arts. 1º–161; EC 132/2023</div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-fed">FEDERAL</span> Verificar novo regime de tributação de subvenções (Lei nº 14.789/2023): crédito fiscal de IRPJ de 25% sobre subvenções para investimento, com habilitação obrigatória na RFB (IN RFB nº 2.228/2024).</div>
+            <div class="item-ref"><strong>Base legal:</strong> Lei nº 14.789/2023, arts. 1º–15; IN RFB nº 2.228/2024; STJ REsp 1.945.110 (Tema 1.182)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEÇÃO 6 -->
+  <div class="section" id="sec6">
+    <div class="section-header" onclick="toggleSection('sec6')">
+      <div class="section-num">6</div>
+      <div class="section-title">Benefícios de IPI, IRPJ e CSLL</div>
+      <div class="section-badge">6 itens</div>
+      <div class="section-toggle">▼</div>
+    </div>
+    <div class="section-body">
+      <div class="subsection">
+        <div class="subsection-title">IPI e Imunidades</div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-fed">FEDERAL</span> Confirmar classificação fiscal (NCM) na TIPI e alíquota aplicável — verificar reduções, isenções ou suspensões setoriais vigentes.</div>
+            <div class="item-ref"><strong>Base legal:</strong> TIPI (Decreto nº 11.158/2022); RIPI (Decreto nº 7.212/2010)</div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-fed">FEDERAL</span> Verificar imunidade de IPI para produtos destinados à exportação (CF/88, art. 153, §3º, III) e procedimentos de ressarcimento ou emissão de NF-e com imunidade.</div>
+            <div class="item-ref"><strong>Base legal:</strong> CF/88, art. 153, §3º, III; RIPI, art. 18; IN RFB nº 948/2009</div>
+          </div>
+        </div>
+      </div>
+      <div class="subsection">
+        <div class="subsection-title">IRPJ e CSLL</div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-fed">FEDERAL</span> Verificar elegibilidade à redução/isenção de IRPJ para empresas instaladas na área da SUDENE ou SUDAM — Lei nº 14.789/2023 e IN RFB nº 2.228/2024.</div>
+            <div class="item-ref"><strong>Base legal:</strong> Lei nº 14.789/2023; IN RFB nº 2.228/2024; Decreto-Lei nº 1.598/1977</div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-fed">FEDERAL</span> Avaliar incentivos fiscais para P&amp;D (Lei do Bem) — Lei nº 11.196/2005, arts. 17 a 26 — dedução adicional de até 80% das despesas com inovação tecnológica do IRPJ/CSLL.</div>
+            <div class="item-ref"><strong>Base legal:</strong> Lei nº 11.196/2005, arts. 17–26; Decreto nº 5.798/2006; IN RFB nº 1.187/2011</div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-fed">FEDERAL</span> Verificar utilização de JCP (Juros sobre Capital Próprio) como redutor da base de CSLL/IRPJ — atenção à limitação da Lei nº 14.789/2023 (vigência 01/01/2024).</div>
+            <div class="item-ref"><strong>Base legal:</strong> Lei nº 9.249/1995, art. 9º; Lei nº 14.789/2023, art. 1º; STJ REsp 1.586.950</div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-fed">FEDERAL</span> Verificar aplicabilidade do PAT para dedução de IRPJ — Lei nº 6.321/1976 e Decreto nº 10.854/2021.</div>
+            <div class="item-ref"><strong>Base legal:</strong> Lei nº 6.321/1976; Decreto nº 10.854/2021; IN RFB nº 267/2002</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEÇÃO 7 -->
+  <div class="section" id="sec7">
+    <div class="section-header" onclick="toggleSection('sec7')">
+      <div class="section-num">7</div>
+      <div class="section-title">Benefícios de ISS — Esfera Municipal</div>
+      <div class="section-badge">4 itens</div>
+      <div class="section-toggle">▼</div>
+    </div>
+    <div class="section-body">
+      <div class="subsection">
+        <div class="subsection-title">Requisitos e Procedimentos</div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-mun">MUNICIPAL</span><span class="tag tag-crit">CRÍTICO</span> Verificar se o serviço consta da Lista Anexa à LC nº 116/2003 e se o município concede redução de alíquota, respeitando o mínimo de 2% (art. 8º-A da LC 116/2003).</div>
+            <div class="item-ref"><strong>Base legal:</strong> LC nº 116/2003; LC nº 157/2016; STF RE 592.905 (Tema 318)</div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-mun">MUNICIPAL</span> Verificar existência de programas municipais de incentivo ao desenvolvimento econômico (isenção/redução de ISS) nos municípios de atuação.</div>
+            <div class="item-ref"><strong>Base legal:</strong> CTN, art. 176; lei municipal de incentivos fiscais; STF ADI 3.669</div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-mun">MUNICIPAL</span> Protocolar requerimento de isenção/redução na Secretaria de Finanças Municipal com documentação exigida no Decreto Regulamentador local (CTN, art. 179).</div>
+            <div class="item-ref"><strong>Base legal:</strong> CTN, art. 179; Decreto regulamentador municipal</div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-mun">MUNICIPAL</span> Confirmar emissão correta da NFS-e com código de serviço compatível ao benefício, evitando autuações por enquadramento divergente de subitem da LC 116/2003.</div>
+            <div class="item-ref"><strong>Base legal:</strong> LC nº 116/2003; Nota Técnica NFS-e CONFAZ/SPED; legislação municipal NFS-e</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEÇÃO 8 -->
+  <div class="section" id="sec8">
+    <div class="section-header" onclick="toggleSection('sec8')">
+      <div class="section-num">8</div>
+      <div class="section-title">Instrução do Processo Administrativo e Compliance Pós-Habilitação</div>
+      <div class="section-badge">8 itens</div>
+      <div class="section-toggle">▼</div>
+    </div>
+    <div class="section-body">
+      <div class="subsection">
+        <div class="subsection-title">Formalização e Protocolo</div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-crit">CRÍTICO</span> Elaborar requerimento fundamentado, indicando: benefício pleiteado, dispositivo legal específico, período pretendido, estimativa do crédito/redução e enquadramento da empresa.</div>
+            <div class="item-ref"><strong>Base legal:</strong> Lei nº 9.784/1999 (PAF federal), arts. 6º e 38; decreto estadual de PAF aplicável</div>
+            <div class="item-note">
+              <div class="item-note-label">✏ Dados do requerimento</div>
+              <div class="item-note-fields">
+                <div class="item-note-field"><label>Benefício pleiteado</label><textarea rows="1" data-note-key="n_req_beneficio" placeholder="Ex.: Crédito presumido ICMS 12%"></textarea></div>
+                <div class="item-note-field"><label>Dispositivo legal</label><textarea rows="1" data-note-key="n_req_legal" placeholder="Ex.: Decreto ES nº 4.032-R/2017, art. X"></textarea></div>
+                <div class="item-note-field"><label>Período pretendido</label><textarea rows="1" data-note-key="n_req_periodo" placeholder="Ex.: 01/01/2026 a 31/12/2029"></textarea></div>
+                <div class="item-note-field"><label>Estimativa do crédito/redução (R$)</label><textarea rows="1" data-note-key="n_req_estimativa" placeholder="Ex.: R$ 500.000,00/ano"></textarea></div>
+                <div class="item-note-field"><label>Regime tributário da empresa</label><textarea rows="1" data-note-key="n_req_regime" placeholder="Ex.: Lucro Real — CNPJ 00.000.000/0001-00"></textarea></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text">Protocolar o processo via sistema eletrônico do ente tributante (e-CAC/RFB, SIAT/SEFAZ, Portal da Fazenda Municipal) e registrar o número do protocolo/NUP para acompanhamento.</div>
+            <div class="item-ref"><strong>Base legal:</strong> Lei nº 9.784/1999, art. 9º; IN RFB nº 2.055/2021</div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text">Assegurar que a documentação está autenticada ou acompanhada de declaração de autenticidade firmada pelo responsável legal.</div>
+            <div class="item-ref"><strong>Base legal:</strong> Lei nº 9.784/1999, art. 22, §2º; Decreto nº 8.539/2015 (documentos digitais)</div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text">Monitorar o prazo de resposta — impugnar silêncio administrativo por mandado de segurança se ultrapassado o prazo legal de 30 dias (Lei nº 9.784/1999, art. 49).</div>
+            <div class="item-ref"><strong>Base legal:</strong> Lei nº 9.784/1999, arts. 48 e 49; Lei nº 12.016/2009 (Mandado de Segurança)</div>
+          </div>
+        </div>
+      </div>
+      <div class="subsection">
+        <div class="subsection-title">Controle e Compliance Pós-Habilitação</div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-crit">CRÍTICO</span> Instituir rotina de monitoramento trimestral das condicionantes do benefício (metas, empregos, investimentos) para evitar cassação por descumprimento.</div>
+            <div class="item-ref"><strong>Base legal:</strong> CTN, art. 179, §1º (revogação de isenção condicionada); lei concessora do benefício</div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text">Segregar contabilmente as operações beneficiadas das demais, por centro de custo ou plano de contas específico — facilita auditoria fiscal e evita glosa.</div>
+            <div class="item-ref"><strong>Base legal:</strong> NBC TG 07 (CPC 07) — Subvenções Governamentais; NBC CTG 2000</div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text">Verificar obrigatoriedade de registro contábil das subvenções governamentais conforme NBC TG 07 (CPC 07) — distinguir subvenção para custeio de subvenção para investimento.</div>
+            <div class="item-ref"><strong>Base legal:</strong> CPC 07 (R1); ITG 2000; Lei nº 14.789/2023 (vigência 01/01/2024)</div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text">Elaborar planejamento tributário prospectivo (2026–2033) contemplando o período de transição da Reforma Tributária — documentar os impactos nos benefícios atuais frente ao IBS/CBS/IS.</div>
+            <div class="item-ref"><strong>Base legal:</strong> EC 132/2023; LC 214/2024; Nota Explicativa CFC nº 003/2024</div>
+            <div class="item-note">
+              <div class="item-note-label">✏ Resumo do planejamento tributário 2026–2033</div>
+              <textarea rows="5" data-note-key="n_planejamento_rt" placeholder="Descreva os principais impactos identificados da Reforma Tributária sobre os benefícios atuais, as ações previstas para o período de transição e as estimativas de impacto financeiro…"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section open" id="sec-outros-geral">
+    <div class="section-header" onclick="toggleSection('sec-outros-geral')">
+      <div class="section-num">0</div>
+      <div class="section-title">Documentos Complementares (Checklist Geral)</div>
+      <div class="section-badge">1 item</div>
+      <div class="section-toggle">▼</div>
+    </div>
+    <div class="section-body">
+      <div class="subsection">
+        <div class="subsection-title">Outros Documentos</div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-doc">DIGITAL</span> Outros documentos de apoio do checklist geral (imagens, texto, Word, planilhas e formatos correlatos).</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /tab-geral -->
+
+
+<!-- ══════════════════════════════════════════════════ -->
+<!-- ABA 2 — INVEST-ES ESPECÍFICO -->
+<!-- ══════════════════════════════════════════════════ -->
+<div class="tab-panel" id="tab-invest">
+
+  <div class="invest-banner">
+    <strong class="invest-banner-title"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.75 19.5 7.5v9L12 20.25 4.5 16.5v-9L12 3.75Z"></path><path d="M9.25 12.25 11 14l3.75-4"></path></svg>Checklist Específico — Programa INVEST-ES</strong><br>
+    Baseado no modelo de documentação interno da empresa e na legislação do Programa de Benefícios Fiscais de ICMS do Estado do Espírito Santo.
+    <strong>Base legal principal:</strong> Lei ES nº 10.568/2016 · Decreto ES nº 4.032-R/2017 · RICMS/ES (Dec. 1.090-R/2002).
+  </div>
+
+  <!-- INVEST SEÇÃO A -->
+  <div class="section invest-es-section open" id="invA">
+    <div class="section-header" onclick="toggleSection('invA')">
+      <div class="section-num">A</div>
+      <div class="section-title">Certidões e Documentos de Regularidade Fiscal</div>
+      <div class="section-badge">4 itens obrigatórios</div>
+      <div class="section-toggle">▼</div>
+    </div>
+    <div class="section-body">
+      <div class="subsection">
+        <div class="subsection-title">Documentos Exigidos — Formato PDF</div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-crit">CRÍTICO</span><span class="tag tag-doc">PDF</span> Certidão Negativa ou Positiva com Efeito de Negativa perante a <strong>Fazenda Estadual do Espírito Santo</strong> (SEFAZ-ES) — débitos de ICMS e demais tributos estaduais.</div>
+            <div class="item-ref"><strong>Base legal:</strong> RICMS/ES, Dec. 1.090-R/2002; Lei ES nº 10.568/2016, condição de regularidade fiscal</div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-crit">CRÍTICO</span><span class="tag tag-doc">PDF</span> Certidão Negativa ou Positiva com Efeito de Negativa de regularidade fiscal quanto aos débitos inscritos ou não em Dívida Ativa da União, inclusive contribuições previdenciárias (CND/CPEN federal — RFB + PGFN).</div>
+            <div class="item-ref"><strong>Base legal:</strong> CTN, art. 205; Portaria RFB/PGFN nº 1.751/2014; Lei ES nº 10.568/2016</div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-doc">PDF</span> Cartão do Cadastro Nacional de Pessoa Jurídica (CNPJ) com situação cadastral <strong>ATIVA</strong> — emitido pela Receita Federal do Brasil.</div>
+            <div class="item-ref"><strong>Base legal:</strong> IN RFB nº 1.863/2018; exigência documental do Programa INVEST-ES</div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-doc">PDF</span> Contrato Social ou Estatuto Social consolidado, acrescido da última alteração contratual devidamente registrada na Junta Comercial do Estado.</div>
+            <div class="item-ref"><strong>Base legal:</strong> CC, arts. 997 e ss.; Lei nº 8.934/1994 (Registro Mercantil); exigência INVEST-ES</div>
+          </div>
+        </div>
+      </div>
+      <div class="subsection">
+        <div class="subsection-title">Outros Registros Necessários</div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-doc">DIGITAL</span> Sintegra atualizado — levantamento das operações fiscais da empresa para confronto com o enquadramento no INVEST-ES e comprovação de movimentação fiscal regular.</div>
+            <div class="item-ref"><strong>Base legal:</strong> Convênio ICMS nº 57/1995; Portaria SEFAZ-ES aplicável</div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-doc">PFX/A3</span><span class="tag tag-crit">CRÍTICO</span> Certificado Digital (e-CNPJ) — arquivo PFX ou token A3 com senha — para assinatura eletrônica do requerimento e documentos no sistema SIAT/SEFAZ-ES.</div>
+            <div class="item-ref"><strong>Base legal:</strong> MP nº 2.200-2/2001; Resolução ITI nº 145/2017; IN RFB nº 1.995/2020</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INVEST SEÇÃO B -->
+  <div class="section invest-es-section open" id="invB">
+    <div class="section-header" onclick="toggleSection('invB')">
+      <div class="section-num">B</div>
+      <div class="section-title">Documentação de Investimentos e Imobilizado (NF-e)</div>
+      <div class="section-badge">4 itens</div>
+      <div class="section-toggle">▼</div>
+    </div>
+    <div class="section-body">
+      <div class="subsection">
+        <div class="subsection-title">Notas Fiscais de Investimentos — Últimos 5 Anos</div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-crit">CRÍTICO</span><span class="tag tag-doc">PDF / XML</span> NF-e de todos os investimentos realizados referentes ao projeto a ser enquadrado no INVEST-ES — <strong>todos os imobilizados com CFOP 1.551 e 2.551</strong> dos últimos 5 anos.</div>
+            <div class="item-ref"><strong>Base legal:</strong> Ajuste SINIEF 07/2005 (NF-e); RICMS/ES, Anexo III (crédito de ICMS sobre ativo imobilizado); Lei ES nº 10.568/2016</div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-doc">PDF / XML</span> Notas fiscais de aquisição de materiais de construção civil que foram <strong>imobilizados</strong> — comprovação de obras e instalações realizadas para o projeto enquadrado.</div>
+            <div class="item-ref"><strong>Base legal:</strong> RICMS/ES; Decreto ES nº 4.032-R/2017 (critérios de investimento para habilitação); STJ REsp 1.141.245 (crédito de ICMS em construção civil)</div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text">Elaborar <strong>planilha de inventário do ativo imobilizado</strong> correlacionando cada NF-e ao bem, CFOP, data de aquisição, valor e percentual de crédito de ICMS aproveitado ou a aproveitar (CIAP).</div>
+            <div class="item-ref"><strong>Base legal:</strong> RICMS/ES — CIAP (Controle de Crédito de ICMS do Ativo Permanente); IN RFB e legislação estadual pertinente</div>
+            <div class="item-note">
+              <div class="item-note-label">✏ Observações sobre o inventário CIAP</div>
+              <textarea rows="3" data-note-key="n_ciap_obs" placeholder="Ex.: Total de bens mapeados, período de apuração, saldo de crédito de ICMS a aproveitar, pendências de correlação NF-e x bem…"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text">Confirmar que os bens do ativo imobilizado estão contabilizados no Balanço Patrimonial e no SPED Contábil (ECD), com correspondência entre os valores das NF-e e o saldo das contas de imobilizado.</div>
+            <div class="item-ref"><strong>Base legal:</strong> CPC 27 (NBC TG 27) — Ativo Imobilizado; IN RFB nº 1.774/2017 (ECD)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INVEST SEÇÃO C -->
+  <div class="section invest-es-section open" id="invC">
+    <div class="section-header" onclick="toggleSection('invC')">
+      <div class="section-num">C</div>
+      <div class="section-title">Licença Ambiental e Regularidade Perante Órgãos Ambientais</div>
+      <div class="section-badge">3 itens</div>
+      <div class="section-toggle">▼</div>
+    </div>
+    <div class="section-body">
+      <div class="subsection">
+        <div class="subsection-title">Documentos Ambientais Exigidos</div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-crit">CRÍTICO</span><span class="tag tag-doc">PDF</span> Licença Ambiental de Operação (LO) válida, emitida pelo IEMA-ES (Instituto Estadual de Meio Ambiente e Recursos Hídricos do ES) ou órgão ambiental competente — ou documento de <strong>dispensa fundamentada</strong>.</div>
+            <div class="item-ref"><strong>Base legal:</strong> Lei Federal nº 6.938/1981 (PNMA); Resolução CONAMA nº 237/1997; Lei ES nº 5.795/1998; Dec. ES nº 1.777-N/1987</div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text">Verificar se a atividade da empresa está sujeita ao licenciamento ambiental conforme a Listagem de Atividades do IEMA-ES — confirmar a classe de licença exigida (LP, LI ou LO).</div>
+            <div class="item-ref"><strong>Base legal:</strong> Resolução CONAMA nº 237/1997; IN IEMA-ES pertinente; Lei Complementar ES nº 903/2016</div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text">Identificar e documentar a empresa responsável pela <strong>coleta e destinação de resíduos sólidos</strong> gerados no processo produtivo — contrato de prestação de serviço com empresa licenciada pelo IEMA-ES.</div>
+            <div class="item-ref"><strong>Base legal:</strong> Lei Federal nº 12.305/2010 (PNRS); Decreto nº 10.936/2022; Lei ES nº 10.104/2013</div>
+            <div class="item-note">
+              <div class="item-note-label">✏ Empresa de coleta de resíduos</div>
+              <div class="item-note-fields">
+                <div class="item-note-field"><label>Razão social</label><textarea rows="1" data-note-key="n_residuos_empresa" placeholder="Ex.: Eco Resíduos Ltda."></textarea></div>
+                <div class="item-note-field"><label>CNPJ</label><textarea rows="1" data-note-key="n_residuos_cnpj" placeholder="Ex.: 00.000.000/0001-00"></textarea></div>
+                <div class="item-note-field"><label>Nº licença IEMA-ES</label><textarea rows="1" data-note-key="n_residuos_licenca" placeholder="Ex.: LO-ES nº 0000/0000"></textarea></div>
+                <div class="item-note-field"><label>Nº contrato / vigência</label><textarea rows="1" data-note-key="n_residuos_contrato" placeholder="Ex.: Contrato 001/2025 — vigência 2 anos"></textarea></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INVEST SEÇÃO D -->
+  <div class="section invest-es-section open" id="invD">
+    <div class="section-header" onclick="toggleSection('invD')">
+      <div class="section-num">D</div>
+      <div class="section-title">Matérias-Primas e Insumos — Origem e NCM</div>
+      <div class="section-badge">3 itens + tabela</div>
+      <div class="section-toggle">▼</div>
+    </div>
+    <div class="section-body">
+      <div class="subsection">
+        <div class="subsection-title">Composição de Insumos por Origem</div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-crit">CRÍTICO</span> Elaborar relação detalhada das matérias-primas e insumos utilizados no processo produtivo, discriminando o <strong>estado de origem</strong> e o <strong>percentual (%) de aquisição</strong> — dado essencial para análise do impacto do benefício nas operações interestaduais.</div>
+            <div class="item-ref"><strong>Base legal:</strong> Lei ES nº 10.568/2016; Decreto ES nº 4.032-R/2017 — critérios de conteúdo regional para habilitação</div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text">Confirmar a <strong>classificação NCM</strong> de cada insumo/matéria-prima e verificar incidência de ICMS nas entradas — identificar benefícios de isenção ou redução na aquisição (Convênios ICMS aplicáveis).</div>
+            <div class="item-ref"><strong>Base legal:</strong> TIPI (Decreto nº 11.158/2022); RICMS/ES — Anexos I e II</div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text">Verificar impacto do benefício INVEST-ES sobre o crédito de ICMS nas entradas — confirmar que o aproveitamento está de acordo com a sistemática de crédito do RICMS/ES (vedações e estornos proporcionais quando houver saída com isenção).</div>
+            <div class="item-ref"><strong>Base legal:</strong> RICMS/ES, arts. pertinentes ao crédito e estorno; CF/88, art. 155, §2º, II</div>
+          </div>
+        </div>
+      </div>
+      <!-- Tabela de Insumos -->
+      <div class="item-table">
+        <div class="item-table-label"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="5" width="16" height="14" rx="2"></rect><path d="M8 9h8"></path><path d="M8 13h5"></path></svg>Tabela de Origem das Matérias-Primas (preencher e anexar ao processo)</div>
+        <table>
+          <thead><tr><th>Origem (Estado / País)</th><th>NCM</th><th>Descrição do Insumo</th><th>% de Aquisição</th></tr></thead>
+          <tbody>
+            <tr><td>ES / Brasil</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+            <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+            <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+            <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+            <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- INVEST SEÇÃO E -->
+  <div class="section invest-es-section open" id="invE">
+    <div class="section-header" onclick="toggleSection('invE')">
+      <div class="section-num">E</div>
+      <div class="section-title">Produtos Vendidos — NCM, CNAE e Enquadramento Fiscal</div>
+      <div class="section-badge">3 itens + tabela</div>
+      <div class="section-toggle">▼</div>
+    </div>
+    <div class="section-body">
+      <div class="subsection">
+        <div class="subsection-title">Produtos Finais e Atividade Econômica</div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-crit">CRÍTICO</span> Descrever todos os <strong>produtos finais fabricados ou a fabricar</strong>, com os respectivos NCM (Nomenclatura Comum do Mercosul) e CNAE — confirmar que o NCM está expressamente contemplado no ato normativo concessor do benefício INVEST-ES.</div>
+            <div class="item-ref"><strong>Base legal:</strong> Decreto INVEST-ES nº 4.032-R/2017 (Anexo de produtos habilitáveis); TIPI; RICMS/ES</div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text">Verificar para cada produto se há incidência de <strong>Substituição Tributária (ST) de ICMS</strong> no ES — quando houver ST, o benefício de crédito presumido pode ser impactado ou vedado.</div>
+            <div class="item-ref"><strong>Base legal:</strong> RICMS/ES, Anexo V (ST); Convênios e Protocolos ICMS de ST aplicáveis ao NCM</div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text">Identificar empresas concorrentes <strong>localizadas no Espírito Santo</strong> que fabriquem produto igual ou similar — informação exigida no processo INVEST-ES para análise de impacto econômico regional.</div>
+            <div class="item-ref"><strong>Base legal:</strong> Lei ES nº 10.568/2016, art. pertinente à análise de mercado regional; Decreto nº 4.032-R/2017</div>
+            <div class="item-note">
+              <div class="item-note-label">✏ Concorrentes identificados no ES</div>
+              <textarea rows="3" data-note-key="n_concorrentes_es" placeholder="Ex.: Empresa X Ltda. (CNPJ 00.000.000/0001-00) — produto similar ao NCM 0000.00.00, localizada em Vitória/ES&#10;Empresa Y S.A. (CNPJ ...) — ...&#10;Nenhum concorrente identificado no ES para os produtos listados."></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Tabela de Produtos -->
+      <div class="item-table">
+        <div class="item-table-label"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="5" width="16" height="14" rx="2"></rect><path d="M8 9h8"></path><path d="M8 13h5"></path></svg>Tabela de Produtos Vendidos / Fabricados (preencher e anexar ao processo)</div>
+        <table>
+          <thead><tr><th>NCM</th><th>Produto / Descrição</th><th>CNAE</th></tr></thead>
+          <tbody>
+            <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+            <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+            <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+            <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+            <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- INVEST SEÇÃO F -->
+  <div class="section invest-es-section open" id="invF">
+    <div class="section-header" onclick="toggleSection('invF')">
+      <div class="section-num">F</div>
+      <div class="section-title">Descrição do Processo Produtivo</div>
+      <div class="section-badge">4 itens</div>
+      <div class="section-toggle">▼</div>
+    </div>
+    <div class="section-body">
+      <div class="subsection">
+        <div class="subsection-title">Fluxo de Produção — Etapas Obrigatórias</div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-crit">CRÍTICO</span> Elaborar memorial descritivo do <strong>fluxo completo de produção</strong> — da recepção da matéria-prima até a expedição do produto final — com identificação de cada etapa do processo e equipamentos utilizados.</div>
+            <div class="item-ref"><strong>Base legal:</strong> Decreto ES nº 4.032-R/2017 — exigência de comprovação de atividade industrial para habilitação ao INVEST-ES</div>
+            <div class="item-note">
+              <div class="item-note-label">✏ Memorial descritivo — fluxo de produção</div>
+              <textarea rows="6" data-note-key="n_memorial_fluxo" placeholder="Descreva cada etapa do processo produtivo, indicando: etapa, equipamentos utilizados, insumos envolvidos e resultado gerado. Ex.:&#10;1. Recepção de matéria-prima: conferência de NF-e, pesagem e armazenagem em galpão climatizado (equipamento: balança industrial Marca X)…"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text">Incluir no memorial: (1) Recepção e armazenagem de matéria-prima; (2) Controle de qualidade na entrada; (3) Processamento/transformação industrial; (4) Embalagem; (5) Revisão/inspeção final; (6) Expedição.</div>
+            <div class="item-ref"><strong>Boas práticas:</strong> ABNT NBR ISO 9001:2015 (rastreabilidade); exigência de memorial INVEST-ES</div>
+            <div class="item-note">
+              <div class="item-note-label">✏ Detalhamento das etapas do memorial</div>
+              <div class="item-note-fields">
+                <div class="item-note-field"><label>1. Recepção e armazenagem</label><textarea rows="1" data-note-key="n_memorial_e1" placeholder="Descreva brevemente…"></textarea></div>
+                <div class="item-note-field"><label>2. Controle de qualidade na entrada</label><textarea rows="1" data-note-key="n_memorial_e2" placeholder="Descreva brevemente…"></textarea></div>
+                <div class="item-note-field"><label>3. Processamento / transformação</label><textarea rows="1" data-note-key="n_memorial_e3" placeholder="Descreva brevemente…"></textarea></div>
+                <div class="item-note-field"><label>4. Embalagem</label><textarea rows="1" data-note-key="n_memorial_e4" placeholder="Descreva brevemente…"></textarea></div>
+                <div class="item-note-field"><label>5. Revisão / inspeção final</label><textarea rows="1" data-note-key="n_memorial_e5" placeholder="Descreva brevemente…"></textarea></div>
+                <div class="item-note-field"><label>6. Expedição</label><textarea rows="1" data-note-key="n_memorial_e6" placeholder="Descreva brevemente…"></textarea></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text">Descrever os <strong>diferenciais tecnológicos</strong> e de processo da empresa — informação utilizada pela SEFAZ-ES para análise da pertinência e relevância econômica do benefício pleiteado.</div>
+            <div class="item-ref"><strong>Base legal:</strong> Lei ES nº 10.568/2016 (critérios de inovação e diferencial produtivo como fator de elegibilidade)</div>
+            <div class="item-note">
+              <div class="item-note-label">✏ Diferenciais tecnológicos e de processo</div>
+              <textarea rows="4" data-note-key="n_diferenciais_tec" placeholder="Descreva os diferenciais tecnológicos, equipamentos de ponta, processos inovadores, certificações e vantagens competitivas que distinguem a empresa no setor…"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text">Verificar se a empresa possui certificações (ISO, INMETRO, Anvisa, MAPA, etc.) que reforcem a comprovação da atividade industrial e qualidade do processo produtivo — incluir cópia no dossiê.</div>
+            <div class="item-ref"><strong>Boas práticas:</strong> Documentação de suporte ao processo INVEST-ES; IN ANVISA / MAPA pertinente ao setor</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INVEST SEÇÃO G -->
+  <div class="section invest-es-section open" id="invG">
+    <div class="section-header" onclick="toggleSection('invG')">
+      <div class="section-num">G</div>
+      <div class="section-title">Projeções Econômicas — Capacidade, Faturamento e Empregos</div>
+      <div class="section-badge">4 itens + tabelas</div>
+      <div class="section-toggle">▼</div>
+    </div>
+    <div class="section-body">
+      <div class="subsection">
+        <div class="subsection-title">Projeções de Capacidade Produtiva (2026–2029)</div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-crit">CRÍTICO</span> Elaborar projeção de <strong>capacidade produtiva</strong> para os exercícios 2026, 2027, 2028 e 2029 — por produto, em unidade de medida pertinente (KG, UN, L, M², etc.).</div>
+            <div class="item-ref"><strong>Base legal:</strong> Decreto ES nº 4.032-R/2017 (exigência de metas produtivas como contrapartida do benefício)</div>
+          </div>
+        </div>
+      </div>
+      <!-- Tabela Capacidade -->
+      <div class="item-table">
+        <div class="item-table-label"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="5" width="16" height="14" rx="2"></rect><path d="M8 9h8"></path><path d="M8 13h5"></path></svg>Tabela de Capacidade de Produção</div>
+        <table>
+          <thead><tr><th>Produto</th><th>2026</th><th>2027</th><th>2028</th><th>2029</th></tr></thead>
+          <tbody>
+            <tr><td>Produto A</td><td>KG/UN</td><td>KG/UN</td><td>KG/UN</td><td>KG/UN</td></tr>
+            <tr><td>Produto B</td><td>KG/UN</td><td>KG/UN</td><td>KG/UN</td><td>KG/UN</td></tr>
+            <tr><td>Produto C</td><td>KG/UN</td><td>KG/UN</td><td>KG/UN</td><td>KG/UN</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="subsection">
+        <div class="subsection-title">Projeção de Faturamento por Destino (2026–2029)</div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-crit">CRÍTICO</span> Elaborar projeção de <strong>faturamento</strong> para 2026–2029, separando o percentual de vendas <strong>dentro do ES</strong>, <strong>fora do ES</strong> (mercado nacional) e <strong>Exterior</strong> (exportação) — dado relevante para cálculo do impacto fiscal para o estado.</div>
+            <div class="item-ref"><strong>Base legal:</strong> Lei ES nº 10.568/2016; Decreto INVEST-ES nº 4.032-R/2017 — análise do impacto do benefício nas receitas do ES</div>
+          </div>
+        </div>
+      </div>
+      <!-- Tabela Faturamento -->
+      <div class="item-table">
+        <div class="item-table-label"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="5" width="16" height="14" rx="2"></rect><path d="M8 9h8"></path><path d="M8 13h5"></path></svg>Tabela de Projeção de Faturamento</div>
+        <table>
+          <thead><tr><th>Destino</th><th>2026 (R$)</th><th>2027 (R$)</th><th>2028 (R$)</th><th>2029 (R$)</th></tr></thead>
+          <tbody>
+            <tr><td>Dentro do ES</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+            <tr><td>Fora do ES (nacional)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+            <tr><td>Exterior (exportação)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+            <tr style="font-weight:bold; background:#d4f0e0"><td>TOTAL</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="subsection">
+        <div class="subsection-title">Geração de Empregos e Histórico da Empresa</div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-crit">CRÍTICO</span> Informar a <strong>quantidade de empregos a serem gerados ou mantidos</strong> com o projeto objeto do benefício — discriminar empregos diretos, indiretos e salário médio. Essa informação é contrapartida formal do INVEST-ES.</div>
+            <div class="item-ref"><strong>Base legal:</strong> Lei ES nº 10.568/2016 — geração de emprego e renda como contrapartida do benefício; CAGED (Lei nº 4.923/1965)</div>
+            <div class="item-note">
+              <div class="item-note-label">✏ Projeção de empregos</div>
+              <div class="item-note-fields">
+                <div class="item-note-field"><label>Empregos diretos gerados/mantidos</label><textarea rows="1" data-note-key="n_empregos_diretos" placeholder="Ex.: 45 empregos diretos"></textarea></div>
+                <div class="item-note-field"><label>Empregos indiretos estimados</label><textarea rows="1" data-note-key="n_empregos_indiretos" placeholder="Ex.: ~120 empregos indiretos"></textarea></div>
+                <div class="item-note-field"><label>Salário médio (R$)</label><textarea rows="1" data-note-key="n_empregos_salario" placeholder="Ex.: R$ 3.200,00"></textarea></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text">Elaborar <strong>breve histórico da empresa ou do grupo econômico</strong> — origem, evolução, presença nos estados, principais produtos, mercados atendidos e diferenciais competitivos. Texto narrativo a ser incluído no requerimento.</div>
+            <div class="item-ref"><strong>Base legal:</strong> Exigência formal do formulário de habilitação ao Programa INVEST-ES (Decreto ES nº 4.032-R/2017)</div>
+            <div class="item-note">
+              <div class="item-note-label">✏ Histórico da empresa / grupo econômico</div>
+              <textarea rows="6" data-note-key="n_historico_empresa" placeholder="Descreva a origem e história da empresa, ano de fundação, evolução das atividades, estados de atuação, principais produtos fabricados, mercados atendidos (local, nacional, internacional) e diferenciais competitivos…"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INVEST SEÇÃO H -->
+  <div class="section invest-es-section" id="invH">
+    <div class="section-header" onclick="toggleSection('invH')">
+      <div class="section-num">H</div>
+      <div class="section-title">Conformidade Pós-Concessão — INVEST-ES</div>
+      <div class="section-badge">4 itens</div>
+      <div class="section-toggle">▼</div>
+    </div>
+    <div class="section-body">
+      <div class="subsection">
+        <div class="subsection-title">Obrigações Continuadas Após Habilitação</div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-crit">CRÍTICO</span> Manter durante toda a vigência do benefício: (a) regularidade fiscal estadual e federal; (b) cumprimento das metas de geração de empregos; (c) produção regular dos bens enquadrados; (d) licença ambiental válida.</div>
+            <div class="item-ref"><strong>Base legal:</strong> Lei ES nº 10.568/2016, art. pertinente à manutenção das condições de habilitação; CTN, art. 179, §1º</div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text">Entregar à SEFAZ-ES os <strong>relatórios periódicos de acompanhamento</strong> exigidos pelo Decreto nº 4.032-R/2017 — produção, faturamento, empregos e investimentos — nos prazos estabelecidos.</div>
+            <div class="item-ref"><strong>Base legal:</strong> Decreto ES nº 4.032-R/2017 (obrigações acessórias do beneficiário INVEST-ES)</div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text">Assegurar o correto <strong>registro contábil da subvenção governamental</strong> (crédito presumido de ICMS) conforme NBC TG 07 (CPC 07) e o novo regime tributário da Lei nº 14.789/2023 — evitar tributação indevida do benefício no IRPJ/CSLL.</div>
+            <div class="item-ref"><strong>Base legal:</strong> CPC 07 (R1); STJ Tema 1.182 (REsp 1.945.110); Lei nº 14.789/2023; IN RFB nº 2.228/2024</div>
+          </div>
+        </div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text">Monitorar o impacto da Reforma Tributária (EC 132/2023 e LC 214/2024) sobre o benefício INVEST-ES — verificar se o crédito presumido de ICMS será mantido no período de transição 2026–2032 ou se haverá extinção antecipada.</div>
+            <div class="item-ref"><strong>Base legal:</strong> LC 214/2024, arts. 340–360; EC 132/2023, art. 15 (ADCT); CONFAZ — deliberações sobre benefícios estaduais</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section invest-es-section open" id="inv-outros-docs">
+    <div class="section-header" onclick="toggleSection('inv-outros-docs')">
+      <div class="section-num">X</div>
+      <div class="section-title">Documentos Complementares (INVEST-ES)</div>
+      <div class="section-badge">1 item</div>
+      <div class="section-toggle">▼</div>
+    </div>
+    <div class="section-body">
+      <div class="subsection">
+        <div class="subsection-title">Outros Documentos</div>
+        <div class="item" onclick="toggleItem(this)">
+          <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+          <div class="item-content">
+            <div class="item-text"><span class="tag tag-doc">DIGITAL</span> Outros documentos de apoio do INVEST-ES (imagens, texto, Word, planilhas e formatos correlatos).</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /tab-invest -->
+
+</main>
+
+<!-- FOOTER -->
+<div class="footer-actions">
+  <div class="footer-info">
+    <div class="footer-stats">
+      <span>Concluídos: <strong id="footerCount">0</strong></span>
+      <span>|</span>
+      <span>Pendentes: <strong id="footerPending">0</strong></span>
+      <span>|</span>
+      <span>Total: <strong id="footerTotal">0</strong></span>
+    </div>
+    <div class="footer-dev">Desenvolvido por Matheus Molina</div>
+  </div>
+  <div class="footer-buttons">
+    <button class="btn btn-outline" onclick="expandAll()">Expandir Tudo</button>
+    <button class="btn btn-outline" onclick="clearAll()">Limpar Marcações</button>
+    <button class="btn btn-submit" onclick="openSubmitModal()"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>Enviar</button>
+  </div>
+</div>
+
+<!-- MODAL: Envio por Email -->
+<div id="submitModal" class="modal" style="display:none;">
+  <div class="modal-overlay" onclick="closeSubmitModal()"></div>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Enviar Formulário por Email</h2>
+      <button class="modal-close" onclick="closeSubmitModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-form-group">
+        <label for="submitEmail">Seu Email</label>
+        <input type="email" id="submitEmail" placeholder="seu-email@empresa.com" required>
+      </div>
+      <div class="modal-form-group">
+        <label for="submitCompany">Nome da Empresa</label>
+        <input type="text" id="submitCompany" placeholder="Ex.: Empresa ABC Ltda." required>
+      </div>
+      <div class="modal-note">
+        <strong>Informação:</strong> Todos os dados preenchidos no formulário, bem como os documentos anexados, serão enviados para seu email e para o administrador do sistema.
+      </div>
+      <div class="modal-progress" id="submitProgress" style="display:none;">
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+        <div class="progress-text" id="progressText">Enviando...</div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeSubmitModal()">Cancelar</button>
+      <button class="btn btn-gold" onclick="submitFormViaEmail()"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>Enviar Agora</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  /* ── EDITABLE TABLES + LOCALSTORAGE ──────────────────── */
+  const FORM_SUBMIT_ENDPOINT_BASE = 'https://formsubmit.co/';
+  const FORM_SUBMIT_RECIPIENTS = [
+    'gerencia@ossassessoria.com.br',
+    'planejamento@ossassessoria.com.br'
+  ];
+  const JSPDF_CDN_URL = 'https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js';
+  const HTML2CANVAS_CDN_URL = 'https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js';
+  const FORM_UPLOAD_MAX_FILES = 100;
+  const FORM_UPLOAD_MAX_FILE_SIZE = 100 * 1024 * 1024;
+  const FORM_UPLOAD_MAX_TOTAL_SIZE = 100 * 1024 * 1024;
+  const TABLE_STORAGE_KEY = 'checklist_tables_v1';
+
+  function getTableData() {
+    try { return JSON.parse(localStorage.getItem(TABLE_STORAGE_KEY) || '{}'); }
+    catch(e) { return {}; }
+  }
+
+  function saveTableData(data) {
+    localStorage.setItem(TABLE_STORAGE_KEY, JSON.stringify(data));
+  }
+
+  /* ── ATTACH ZONES ────────────────────────────────────────────── */
+  const ATTACH_STORAGE_KEY = 'checklist_attach_v1';
+  const ATTACH_FILE_CACHE = {};
+
+  function getAttachData() {
+    try { return JSON.parse(localStorage.getItem(ATTACH_STORAGE_KEY) || '{}'); }
+    catch(e) { return {}; }
+  }
+
+  function saveAttachMeta(key, files) {
+    const d = getAttachData();
+    d[key] = files;
+    localStorage.setItem(ATTACH_STORAGE_KEY, JSON.stringify(d));
+  }
+
+
+  
+  function clearAttachmentFromCache(attachKey, meta) {
+    if (!ATTACH_FILE_CACHE[attachKey]) return;
+    ATTACH_FILE_CACHE[attachKey] = ATTACH_FILE_CACHE[attachKey].filter(
+      f => f.name !== meta.name || f.added !== meta.added
+    );
+    if (!ATTACH_FILE_CACHE[attachKey].length) delete ATTACH_FILE_CACHE[attachKey];
+  }
+
+  function fileToBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const result = typeof reader.result === 'string' ? reader.result : '';
+        const commaIndex = result.indexOf(',');
+        if (commaIndex === -1) {
+          reject(new Error('Formato inválido de arquivo.'));
+          return;
+        }
+        resolve(result.slice(commaIndex + 1));
+      };
+      reader.onerror = () => reject(new Error('Falha ao ler o arquivo para envio.'));
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function base64ToFile(base64Data, filename, mimeType) {
+    const base64 = (base64Data || '').split(',').pop();
+    const binary = atob(base64);
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) {
+      bytes[i] = binary.charCodeAt(i);
+    }
+    return new File([bytes], filename, { type: mimeType || 'application/octet-stream' });
+  }
+
+  function getAttachmentsPayload() {
+    const payload = {};
+    const missing = [];
+
+    for (const [key, files] of Object.entries(ATTACH_FILE_CACHE)) {
+      if (!Array.isArray(files) || !files.length) continue;
+      payload[key] = files.map(file => ({
+        name: file.name,
+        type: file.type,
+        size: file.size,
+        data: file.data
+      }));
+    }
+
+    const stored = getAttachData();
+    for (const [key, files] of Object.entries(stored)) {
+      if (!Array.isArray(files) || !files.length) continue;
+      const cachedCount = Array.isArray(ATTACH_FILE_CACHE[key]) ? ATTACH_FILE_CACHE[key].length : 0;
+      if (cachedCount < files.length) {
+        files.forEach(meta => {
+          const exists = Array.isArray(ATTACH_FILE_CACHE[key])
+            && ATTACH_FILE_CACHE[key].some(c => c.name === meta.name && c.added === meta.added);
+          if (!exists) {
+            missing.push(meta.name);
+          }
+        });
+      }
+    }
+
+    return { payload, missing };
+  }
+
+  function getPayloadAttachmentStats(payload) {
+    let totalFiles = 0;
+    let totalBytes = 0;
+    Object.values(payload || {}).forEach(files => {
+      if (!Array.isArray(files)) return;
+      files.forEach(file => {
+        totalFiles += 1;
+        totalBytes += Number(file.size || 0);
+      });
+    });
+    return { totalFiles, totalBytes };
+  }
+
+  let jsPdfLoaderPromise = null;
+  let html2CanvasLoaderPromise = null;
+
+  function loadJsPdf() {
+    if (window.jspdf && window.jspdf.jsPDF) return Promise.resolve(window.jspdf.jsPDF);
+    if (jsPdfLoaderPromise) return jsPdfLoaderPromise;
+
+    jsPdfLoaderPromise = new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = JSPDF_CDN_URL;
+      script.async = true;
+      script.onload = () => {
+        if (window.jspdf && window.jspdf.jsPDF) {
+          resolve(window.jspdf.jsPDF);
+        } else {
+          reject(new Error('Falha ao carregar biblioteca de PDF.'));
+        }
+      };
+      script.onerror = () => reject(new Error('Não foi possível carregar a biblioteca de PDF.'));
+      document.head.appendChild(script);
+    });
+
+    return jsPdfLoaderPromise;
+  }
+
+  function loadHtml2Canvas() {
+    if (window.html2canvas) return Promise.resolve(window.html2canvas);
+    if (html2CanvasLoaderPromise) return html2CanvasLoaderPromise;
+
+    html2CanvasLoaderPromise = new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = HTML2CANVAS_CDN_URL;
+      script.async = true;
+      script.onload = () => {
+        if (window.html2canvas) {
+          resolve(window.html2canvas);
+        } else {
+          reject(new Error('Falha ao carregar biblioteca de captura do PDF.'));
+        }
+      };
+      script.onerror = () => reject(new Error('Não foi possível carregar a biblioteca de captura do PDF.'));
+      document.head.appendChild(script);
+    });
+
+    return html2CanvasLoaderPromise;
+  }
+
+  async function buildChecklistPdfFile(email, company, formData) {
+    const printMarkup = buildPrintDocument();
+    if (!printMarkup) {
+      throw new Error('Não foi possível preparar a versão visual do checklist para PDF.');
+    }
+
+    const [jsPDF, html2canvas] = await Promise.all([loadJsPdf(), loadHtml2Canvas()]);
+
+    const iframe = document.createElement('iframe');
+    iframe.style.position = 'fixed';
+    iframe.style.left = '-10000px';
+    iframe.style.top = '0';
+    iframe.style.width = '1024px';
+    iframe.style.height = '1400px';
+    iframe.style.border = '0';
+    iframe.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(iframe);
+
+    try {
+      const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+      iframeDoc.open();
+      iframeDoc.write(printMarkup);
+      iframeDoc.close();
+
+      await new Promise(resolve => {
+        const complete = () => resolve();
+        if (iframe.contentWindow.document.readyState === 'complete') {
+          complete();
+        } else {
+          iframe.onload = complete;
+        }
+      });
+
+      if (iframe.contentWindow.document.fonts && iframe.contentWindow.document.fonts.ready) {
+        await iframe.contentWindow.document.fonts.ready;
+      }
+
+      const captureTarget = iframe.contentWindow.document.body;
+      const canvas = await html2canvas(captureTarget, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: '#ffffff',
+        width: iframe.contentWindow.document.documentElement.scrollWidth,
+        height: iframe.contentWindow.document.documentElement.scrollHeight,
+        windowWidth: iframe.contentWindow.document.documentElement.scrollWidth,
+        windowHeight: iframe.contentWindow.document.documentElement.scrollHeight
+      });
+
+      const imgData = canvas.toDataURL('image/jpeg', 0.98);
+      const doc = new jsPDF({ unit: 'pt', format: 'a4' });
+      const pageWidth = doc.internal.pageSize.getWidth();
+      const pageHeight = doc.internal.pageSize.getHeight();
+      const imgWidth = pageWidth;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+      let heightLeft = imgHeight;
+      let position = 0;
+
+      doc.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+
+      while (heightLeft > 0) {
+        position = heightLeft - imgHeight;
+        doc.addPage();
+        doc.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      }
+
+      const blob = doc.output('blob');
+      const safeCompany = (company || 'empresa').replace(/[^a-z0-9]/gi, '_').toLowerCase();
+      return new File([blob], `checklist_${safeCompany}.pdf`, { type: 'application/pdf' });
+    } finally {
+      iframe.remove();
+    }
+
+  }
+
+  function buildOfflineSnapshotDocument() {
+    const rootClone = document.documentElement.cloneNode(true);
+
+    // ── 1. Capture live .item checked states ─────────────────────
+    document.querySelectorAll('.item').forEach((srcItem, i) => {
+      const tgtItem = rootClone.querySelectorAll('.item')[i];
+      if (!tgtItem) return;
+      if (srcItem.classList.contains('checked')) tgtItem.classList.add('checked');
+      else tgtItem.classList.remove('checked');
+    });
+
+    // ── 2. Capture live textarea / input / select values ─────────
+    const sourceControls = document.querySelectorAll('textarea, input, select');
+    const targetControls = rootClone.querySelectorAll('textarea, input, select');
+    sourceControls.forEach((src, idx) => {
+      const tgt = targetControls[idx];
+      if (!tgt) return;
+      const tag = src.tagName;
+      const type = (src.type || '').toLowerCase();
+      if (tag === 'TEXTAREA') {
+        tgt.textContent = src.value;
+        return;
+      }
+      if (tag === 'INPUT') {
+        if (type === 'checkbox' || type === 'radio') {
+          if (src.checked) tgt.setAttribute('checked', 'checked');
+          else tgt.removeAttribute('checked');
+        } else {
+          tgt.setAttribute('value', src.value || '');
+        }
+        return;
+      }
+      if (tag === 'SELECT') {
+        Array.from(tgt.options).forEach((opt, i) => {
+          if (src.options[i] && src.options[i].selected) opt.setAttribute('selected', 'selected');
+          else opt.removeAttribute('selected');
+        });
+      }
+    });
+
+    // ── 3. Capture editable table cell values ────────────────────
+    document.querySelectorAll('.item-table td[data-key]').forEach((srcCell, i) => {
+      const tgtCell = rootClone.querySelectorAll('.item-table td[data-key]')[i];
+      if (tgtCell) {
+        tgtCell.textContent = srcCell.textContent;
+        tgtCell.removeAttribute('contenteditable');
+      }
+    });
+
+    // ── 3.1 Normalize textareas for static/offline rendering ─────
+    rootClone.querySelectorAll('textarea').forEach(area => {
+      area.style.height = 'auto';
+      area.style.minHeight = Math.max(Number(area.getAttribute('rows') || 1) * 20, 24) + 'px';
+    });
+
+    // ── 4. Make all tab panels and sections visible ───────────────
+    rootClone.querySelectorAll('.tab-panel').forEach(p => p.classList.add('active'));
+    rootClone.querySelectorAll('.section').forEach(s => s.classList.add('open'));
+
+    // ── 5. Remove all scripts (make snapshot fully static) ───────
+    rootClone.querySelectorAll('script').forEach(s => s.remove());
+    rootClone.querySelectorAll('[onclick]').forEach(el => el.removeAttribute('onclick'));
+
+    // ── 6. Remove interactive / send-only elements ────────────────
+    const modal = rootClone.querySelector('#submitModal');
+    if (modal) modal.remove();
+    const footerActions = rootClone.querySelector('.footer-actions');
+    if (footerActions) footerActions.remove();
+    rootClone.querySelectorAll('.item-attach-btn').forEach(el => el.remove());
+    rootClone.querySelectorAll('.item-attach-drop-hint').forEach(el => el.remove());
+    rootClone.querySelectorAll('input[type="file"]').forEach(el => el.remove());
+    rootClone.querySelectorAll('.tabs-wrap').forEach(el => el.remove());
+
+    // ── 7. Remove local logo images (broken path in email) ────────
+    rootClone.querySelectorAll('img[src^="logo/"]').forEach(img => img.remove());
+
+    // ── 8. Remove browser-extension noise ─────────────────────────
+    rootClone.querySelectorAll('meta[id]').forEach(meta => {
+      if (!meta.hasAttribute('name') && !meta.hasAttribute('charset') && !meta.hasAttribute('http-equiv')) {
+        meta.remove();
+      }
+    });
+    rootClone.querySelectorAll('style').forEach(styleEl => {
+      const css = styleEl.textContent || '';
+      if (css.includes('.vue-notification-group') || css.includes('.vn-fade-enter-active')) {
+        styleEl.remove();
+      }
+    });
+    rootClone.querySelectorAll('link[href*="fonts.googleapis.com/css2?family=Inter"]').forEach(link => link.remove());
+
+    // ── 9. Inject override CSS to show all content statically ─────
+    const headClone = rootClone.querySelector('head');
+    if (headClone) {
+      if (!headClone.querySelector('meta[http-equiv="Content-Type"]')) {
+        const contentTypeMeta = document.createElement('meta');
+        contentTypeMeta.setAttribute('http-equiv', 'Content-Type');
+        contentTypeMeta.setAttribute('content', 'text/html; charset=UTF-8');
+        headClone.prepend(contentTypeMeta);
+      }
+      const overrideStyle = document.createElement('style');
+      overrideStyle.textContent = [
+        '.tab-panel { display: block !important; }',
+        '.section-body { display: block !important; }',
+        '.section-toggle { display: none !important; }',
+        '.footer-actions { display: none !important; }',
+        '.tabs-wrap { display: none !important; }',
+        '.header-progress-sticky { display: none !important; }',
+        '.item-attach-btn { display: none !important; }',
+        '.item-attach-drop-hint { display: none !important; }',
+        '#submitModal { display: none !important; }',
+        'body { padding-bottom: 0 !important; }',
+        'body::before { display: none !important; }',
+      ].join('\n');
+      headClone.appendChild(overrideStyle);
+    }
+
+    return `<!DOCTYPE html>\n${rootClone.outerHTML}`;
+  }
+
+  function buildChecklistOfflineHtmlFile(company) {
+    const formattedMarkup = buildPrintDocument();
+    if (!formattedMarkup) {
+      throw new Error('Não foi possível preparar a versão offline do checklist em HTML.');
+    }
+
+    const safeCompany = (company || 'empresa').replace(/[^a-z0-9]/gi, '_').toLowerCase();
+    const blob = new Blob(['\uFEFF', formattedMarkup], { type: 'text/html;charset=utf-8' });
+    return new File([blob], `checklist_${safeCompany}_offline.html`, { type: 'text/html' });
+  }
+
+  function formatBytes(b) {
+    if (b < 1024) return b + ' B';
+    if (b < 1048576) return (b / 1024).toFixed(0) + ' KB';
+    return (b / 1048576).toFixed(1) + ' MB';
+  }
+
+  function fileIconSVG(type) {
+    // type: 'pdf' | 'xml' | 'img' | 'doc' | 'xls' | 'zip' | 'other'
+    const colors = { pdf:'#bf4a42', xml:'#3d7a5a', img:'#3d5a80', doc:'#2c5fba', xls:'#1a6b38', zip:'#8c6a30', other:'#6647a6' };
+    const c = colors[type] || colors.other;
+    return `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`;
+  }
+
+  function detectFileType(name) {
+    const ext = (name.split('.').pop() || '').toLowerCase();
+    if (ext === 'pdf') return 'pdf';
+    if (ext === 'xml') return 'xml';
+    if (['jpg','jpeg','png','gif','webp'].includes(ext)) return 'img';
+    if (['doc','docx'].includes(ext)) return 'doc';
+    if (['xls','xlsx','csv'].includes(ext)) return 'xls';
+    if (['zip','rar','7z'].includes(ext)) return 'zip';
+    return 'other';
+  }
+
+  function renderFilePill(filesContainer, attachKey, meta, isGhost) {
+    const pill = document.createElement('div');
+    pill.className = 'item-attach-pill' + (isGhost ? ' ghost' : '');
+    pill.title = meta.name + (isGhost ? ' (referência — recarregue o arquivo)' : '');
+    const ftype = detectFileType(meta.name);
+    pill.innerHTML = `
+      ${fileIconSVG(ftype)}
+      <span class="item-attach-pill-name">${meta.name}</span>
+      <span class="item-attach-pill-size">${meta.size ? formatBytes(meta.size) : ''}</span>
+      <button class="item-attach-remove" title="Remover">×</button>
+    `;
+    pill.querySelector('.item-attach-remove').addEventListener('click', e => {
+      e.stopPropagation();
+      pill.remove();
+      clearAttachmentFromCache(attachKey, meta);
+      // Remove from storage
+      const d = getAttachData();
+      if (d[attachKey]) {
+        d[attachKey] = d[attachKey].filter(f => f.name !== meta.name || f.added !== meta.added);
+        if (d[attachKey].length === 0) delete d[attachKey];
+        localStorage.setItem(ATTACH_STORAGE_KEY, JSON.stringify(d));
+      }
+    });
+    filesContainer.appendChild(pill);
+  }
+
+  function initAttachZones() {
+    const stored = getAttachData();
+    document.querySelectorAll('.item').forEach((item, idx) => {
+      if (!item.querySelector('.tag-doc')) return;
+
+      const key = `attach_${idx}`;
+      const content = item.querySelector('.item-content');
+      if (!content) return;
+
+      // Build zone
+      const zone = document.createElement('div');
+      zone.className = 'item-attach';
+      zone.innerHTML = `
+        <div class="item-attach-header">
+          <div class="item-attach-label">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66L9.41 17.41a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+            Documentos anexados
+          </div>
+          <label class="item-attach-btn" title="Selecionar arquivos (PDF, XML, imagens…)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            Selecionar arquivo
+            <input type="file" multiple accept=".pdf,.xml,.jpg,.jpeg,.png,.gif,.webp,.bmp,.txt,.rtf,.doc,.docx,.odt,.xls,.xlsx,.ods,.csv,.ppt,.pptx,.zip,.rar,.7z,.pfx,.p7s,.json,.eml,.msg" hidden>
+          </label>
+        </div>
+        <div class="item-attach-files"></div>
+        <div class="item-attach-drop-hint">Arraste arquivos aqui ou use o botão acima</div>
+      `;
+
+      content.appendChild(zone);
+
+      const filesContainer = zone.querySelector('.item-attach-files');
+      const input = zone.querySelector('input[type=file]');
+
+      // Restore persisted metadata (ghost pills)
+      if (stored[key] && stored[key].length) {
+        stored[key].forEach(meta => renderFilePill(filesContainer, key, meta, true));
+      }
+
+      // File input change
+      input.addEventListener('change', async e => {
+        e.stopPropagation();
+        await addFiles(Array.from(input.files), filesContainer, key);
+        input.value = '';
+      });
+
+      // Drag & drop
+      zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
+      zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+      zone.addEventListener('drop', async e => {
+        e.preventDefault();
+        e.stopPropagation();
+        zone.classList.remove('drag-over');
+        await addFiles(Array.from(e.dataTransfer.files), filesContainer, key);
+      });
+
+      // Stop item toggle propagation
+      zone.addEventListener('click', e => e.stopPropagation());
+      zone.addEventListener('mousedown', e => e.stopPropagation());
+    });
+  }
+
+  async function addFiles(files, filesContainer, key) {
+    const d = getAttachData();
+    if (!d[key]) d[key] = [];
+    if (!ATTACH_FILE_CACHE[key]) ATTACH_FILE_CACHE[key] = [];
+
+    let totalFiles = 0;
+    let totalBytes = 0;
+    Object.values(d).forEach(list => {
+      if (!Array.isArray(list)) return;
+      list.forEach(meta => {
+        totalFiles += 1;
+        totalBytes += Number(meta.size || 0);
+      });
+    });
+
+    for (const file of files) {
+      // Avoid duplicates by name
+      if (d[key].some(f => f.name === file.name)) continue;
+
+      if (file.size > FORM_UPLOAD_MAX_FILE_SIZE) {
+        alert(`O arquivo ${file.name} ultrapassa 100 MB e não pode ser enviado no FormSubmit.`);
+        continue;
+      }
+
+      if (totalFiles >= FORM_UPLOAD_MAX_FILES) {
+        alert('Limite atingido: máximo de 100 arquivos por envio.');
+        break;
+      }
+
+      if ((totalBytes + file.size) > FORM_UPLOAD_MAX_TOTAL_SIZE) {
+        alert('Tamanho total dos anexos muito alto. No FormSubmit, o total de arquivos deve ficar em até 100 MB por envio.');
+        continue;
+      }
+
+      const meta = { name: file.name, size: file.size, type: file.type, added: Date.now() };
+      d[key].push(meta);
+      renderFilePill(filesContainer, key, meta, false);
+
+      try {
+        const base64Data = await fileToBase64(file);
+        ATTACH_FILE_CACHE[key].push({
+          name: file.name,
+          size: file.size,
+          type: file.type,
+          added: meta.added,
+          data: base64Data
+        });
+      } catch (error) {
+        d[key] = d[key].filter(f => !(f.name === meta.name && f.added === meta.added));
+        if (!d[key].length) delete d[key];
+        clearAttachmentFromCache(key, meta);
+        alert(`Não foi possível ler o arquivo ${file.name}. Tente anexar novamente.`);
+        continue;
+      }
+
+      totalFiles += 1;
+      totalBytes += file.size;
+    }
+
+    localStorage.setItem(ATTACH_STORAGE_KEY, JSON.stringify(d));
+  }
+
+  /* ── NOTE AREAS + LOCALSTORAGE ─────────────────────────────── */
+  const NOTE_STORAGE_KEY = 'checklist_notes_v1';
+
+  function autoResizeTextarea(el) {
+    el.style.height = 'auto';
+    el.style.height = el.scrollHeight + 'px';
+  }
+
+  function initNoteAreas() {
+    let data = {};
+    try { data = JSON.parse(localStorage.getItem(NOTE_STORAGE_KEY) || '{}'); } catch(e) {}
+    document.querySelectorAll('[data-note-key]').forEach(el => {
+      const key = el.getAttribute('data-note-key');
+      if (data[key] !== undefined) el.value = data[key];
+      if (el.tagName === 'TEXTAREA') autoResizeTextarea(el);
+      el.addEventListener('input', () => {
+        if (el.tagName === 'TEXTAREA') autoResizeTextarea(el);
+        let d = {};
+        try { d = JSON.parse(localStorage.getItem(NOTE_STORAGE_KEY) || '{}'); } catch(e) {}
+        d[key] = el.value;
+        localStorage.setItem(NOTE_STORAGE_KEY, JSON.stringify(d));
+      });
+      el.addEventListener('click', e => e.stopPropagation());
+      el.addEventListener('mousedown', e => e.stopPropagation());
+    });
+  }
+
+  function initEditableTables() {
+    const data = getTableData();
+    document.querySelectorAll('.item-table table').forEach((table, tIdx) => {
+      table.querySelectorAll('tbody tr').forEach((row, rIdx) => {
+        row.querySelectorAll('td').forEach((cell, cIdx) => {
+          const key = `t${tIdx}_r${rIdx}_c${cIdx}`;
+          cell.setAttribute('contenteditable', 'true');
+          cell.setAttribute('data-placeholder', 'Preencher...');
+          cell.setAttribute('data-key', key);
+          // Restore saved value
+          if (data[key] !== undefined) {
+            cell.textContent = data[key];
+          } else if (cell.innerHTML === '&nbsp;' || cell.textContent.trim() === '\u00a0') {
+            cell.textContent = '';
+          }
+          // Save on input
+          cell.addEventListener('input', () => {
+            const d = getTableData();
+            d[cell.getAttribute('data-key')] = cell.textContent;
+            saveTableData(d);
+          });
+          // Prevent item toggle when clicking inside a cell
+          cell.addEventListener('click', e => e.stopPropagation());
+        });
+      });
+    });
+  }
+
+  function syncStickyOffsets() {
+    const progressSticky = document.querySelector('.header-progress-sticky');
+    if (!progressSticky) return;
+    document.documentElement.style.setProperty('--sticky-progress-offset', progressSticky.offsetHeight + 'px');
+  }
+
+  // Tab switching
+  function switchTab(tab) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + tab).classList.add('active');
+    event.currentTarget.classList.add('active');
+    updateProgress();
+  }
+
+  // Toggle section open/close
+  function toggleSection(id) {
+    document.getElementById(id).classList.toggle('open');
+  }
+
+  // Toggle item checked
+  function toggleItem(el) {
+    el.classList.toggle('checked');
+    updateProgress();
+  }
+
+  // Progress update
+  function updateProgress() {
+    const total = document.querySelectorAll('.item').length;
+    const done = document.querySelectorAll('.item.checked').length;
+    const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = done + ' de ' + total + ' itens concluídos (' + pct + '%)';
+    document.getElementById('footerCount').textContent = done;
+    document.getElementById('footerPending').textContent = total - done;
+    document.getElementById('footerTotal').textContent = total;
+    syncStickyOffsets();
+  }
+
+  // Expand all visible sections
+  function expandAll() {
+    document.querySelectorAll('.section').forEach(s => s.classList.add('open'));
+  }
+
+  // Clear all checks
+  function clearAll() {
+    if (!confirm('Deseja limpar todas as marcações?')) return;
+    document.querySelectorAll('.item.checked').forEach(i => i.classList.remove('checked'));
+    updateProgress();
+  }
+
+  function getActiveTabButton() {
+    return document.querySelector('.tab-btn.active');
+  }
+
+  function getActiveTabPanel() {
+    return document.querySelector('.tab-panel.active');
+  }
+
+  function buildPrintDocument() {
+    const sourcePanels = Array.from(document.querySelectorAll('.tab-panel'));
+    if (!sourcePanels.length) {
+      return null;
+    }
+
+    const tabTitleByKey = {};
+    document.querySelectorAll('.tabs-wrap .tab-btn').forEach(btn => {
+      const onclick = btn.getAttribute('onclick') || '';
+      const match = onclick.match(/switchTab\('([^']+)'\)/);
+      if (match) tabTitleByKey[match[1]] = btn.textContent.trim();
+    });
+
+    const copyLiveControlState = (sourceRoot, targetRoot) => {
+      // cloneNode does not reliably persist live form control state into saved HTML.
+      // Copy current values/selection into the clone so the offline attachment preserves user inputs.
+      const sourceControls = sourceRoot.querySelectorAll('textarea, input, select');
+      const targetControls = targetRoot.querySelectorAll('textarea, input, select');
+      sourceControls.forEach((sourceControl, idx) => {
+        const targetControl = targetControls[idx];
+        if (!targetControl) return;
+
+        const tag = sourceControl.tagName;
+        const type = (sourceControl.type || '').toLowerCase();
+
+        if (tag === 'TEXTAREA') {
+          targetControl.value = sourceControl.value;
+          targetControl.textContent = sourceControl.value;
+          return;
+        }
+
+        if (tag === 'INPUT') {
+          if (type === 'checkbox' || type === 'radio') {
+            targetControl.checked = sourceControl.checked;
+            if (sourceControl.checked) targetControl.setAttribute('checked', 'checked');
+            else targetControl.removeAttribute('checked');
+          } else {
+            targetControl.value = sourceControl.value;
+            targetControl.setAttribute('value', sourceControl.value || '');
+          }
+          return;
+        }
+
+        if (tag === 'SELECT') {
+          targetControl.value = sourceControl.value;
+          Array.from(targetControl.options).forEach(option => {
+            option.selected = option.value === sourceControl.value;
+            if (option.selected) option.setAttribute('selected', 'selected');
+            else option.removeAttribute('selected');
+          });
+        }
+      });
+    };
+
+    const panelBlocks = sourcePanels.map((sourcePanel, idx) => {
+      const panelClone = sourcePanel.cloneNode(true);
+      panelClone.querySelectorAll('[onclick]').forEach(node => node.removeAttribute('onclick'));
+      panelClone.querySelectorAll('.section').forEach(section => section.classList.add('open'));
+      copyLiveControlState(sourcePanel, panelClone);
+
+      const panelKey = (sourcePanel.id || '').replace(/^tab-/, '');
+      const panelTitle = tabTitleByKey[panelKey] || `Aba ${idx + 1}`;
+      return `<section class="print-tab-block"><h2 class="print-tab-title">${panelTitle}</h2>${panelClone.outerHTML}</section>`;
+    });
+
+    const title = document.querySelector('header h1')?.innerText.replace(/\n+/g, ' ').trim() || 'Checklist para Pleito de Benefícios Fiscais';
+    const subtitle = `Todas as abas do checklist (${sourcePanels.length})`;
+    const referenceMeta = document.querySelector('.header-meta')?.innerHTML || '';
+    const totalItems = sourcePanels.reduce((acc, panel) => acc + panel.querySelectorAll('.item').length, 0);
+    const totalChecked = sourcePanels.reduce((acc, panel) => acc + panel.querySelectorAll('.item.checked').length, 0);
+    const generatedAt = new Date().toLocaleString('pt-BR');
+
+    return `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${subtitle} - Impressão</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    @page {
+      size: A4;
+      margin: 14mm 12mm 16mm;
+    }
+
+    :root {
+      --navy: #001a33;
+      --accent: #3d5a80;
+      --accent-dark: #324a69;
+      --accent-soft: #eef2f6;
+      --text: #243240;
+      --muted: #617385;
+      --line: #d9e0e7;
+      --success: #2e7d52;
+      --success-soft: #eef8f2;
+      --critical-soft: #f7f3ea;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #ffffff;
+      color: var(--text);
+      font-family: 'Source Sans 3', sans-serif;
+    }
+
+    body {
+      font-size: 11pt;
+      line-height: 1.45;
+    }
+
+    .print-shell {
+      width: 100%;
+    }
+
+    .print-header {
+      background: linear-gradient(180deg, var(--navy) 0%, #06203b 100%);
+      color: #ffffff;
+      border-radius: 12px;
+      padding: 18px 20px 14px;
+      margin-bottom: 14px;
+    }
+
+    .print-label {
+      display: inline-block;
+      font-size: 8.5pt;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #9fb1c6;
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+
+    .print-title {
+      font-family: 'Manrope', sans-serif;
+      font-size: 21pt;
+      line-height: 1.1;
+      margin: 0 0 10px;
+      color: #ffffff;
+    }
+
+    .print-title span {
+      color: #9fb1c6;
+    }
+
+    .print-meta {
+      display: grid;
+      grid-template-columns: 1.6fr 1fr;
+      gap: 12px;
+      align-items: start;
+    }
+
+    .print-subtitle {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 10pt;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .print-reference {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 8.8pt;
+      line-height: 1.55;
+      color: #d4dde8;
+    }
+
+    .print-reference strong {
+      color: #ffffff;
+    }
+
+    .summary-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .summary-card {
+      background: #f7f9fb;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 10px 12px;
+    }
+
+    .summary-card strong {
+      display: block;
+      font-size: 7.8pt;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .summary-card span {
+      font-size: 12pt;
+      font-weight: 700;
+      color: var(--accent-dark);
+    }
+
+    .print-tab-block {
+      margin-bottom: 16px;
+    }
+
+    .print-tab-title {
+      margin: 0 0 8px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      background: #edf3f9;
+      border: 1px solid #d7e1eb;
+      color: #2f4f75;
+      font-family: 'Manrope', sans-serif;
+      font-size: 10pt;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .tab-panel {
+      display: block !important;
+    }
+
+    .intro-box,
+    .invest-banner,
+    .legend {
+      margin-bottom: 12px;
+      border-radius: 10px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      box-shadow: none;
+    }
+
+    .intro-box {
+      background: #f7f9fb;
+      color: var(--text);
+    }
+
+    .intro-box strong {
+      color: var(--accent-dark);
+    }
+
+    .invest-banner {
+      background: #eef8f2;
+      color: #214a31;
+      border-color: #d9eadf;
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 12px;
+      background: #fbfcfd;
+    }
+
+    .legend-item {
+      font-size: 8.8pt;
+      color: var(--muted);
+    }
+
+    .tag {
+      display: inline-block;
+      font-size: 7.2pt;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 2px 6px;
+      border-radius: 999px;
+      margin-right: 4px;
+      vertical-align: baseline;
+      border: 1px solid rgba(0, 26, 51, 0.06);
+    }
+
+    .tag-fed { background: #e8eef6; color: #2f4f75; }
+    .tag-est { background: #edf3f9; color: #4f759f; }
+    .tag-mun { background: #f2f7fc; color: #7396bd; }
+    .tag-crit { background: #faece9; color: #bf4a42; }
+    .tag-invest { background: #e3f3e9; color: #316b49; }
+    .tag-doc { background: #f0ebfa; color: #6647a6; }
+
+    .section {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      margin-bottom: 14px;
+      overflow: hidden;
+      break-inside: auto;
+      page-break-inside: auto;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 14px;
+      background: linear-gradient(135deg, var(--navy) 0%, #16304d 100%);
+      color: #ffffff;
+      break-after: avoid-page;
+      page-break-after: avoid;
+    }
+
+    .section-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9pt;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+      color: #ffffff;
+      flex-shrink: 0;
+    }
+
+    .section-title {
+      flex: 1;
+      font-family: 'Manrope', sans-serif;
+      font-size: 12.5pt;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .section-badge {
+      font-size: 8pt;
+      font-weight: 700;
+      color: #ffffff;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.16);
+      padding: 4px 8px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    .section-toggle,
+    .ui-icon {
+      display: none !important;
+    }
+
+    .section-body {
+      display: block !important;
+      background: #ffffff;
+    }
+
+    .subsection {
+      border-top: 1px solid #edf1f5;
+    }
+
+    .subsection:first-child {
+      border-top: none;
+    }
+
+    .subsection-title {
+      padding: 10px 14px 8px;
+      background: #f7f9fb;
+      border-bottom: 1px solid #e8edf2;
+      color: var(--accent-dark);
+      font-size: 8.2pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      break-after: avoid-page;
+      page-break-after: avoid;
+    }
+
+    .item {
+      display: flex;
+      gap: 10px;
+      padding: 10px 14px;
+      border-bottom: 1px solid #eff3f6;
+      background: #ffffff;
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    .item:last-child {
+      border-bottom: none;
+    }
+
+    .item.checked {
+      background: var(--success-soft);
+    }
+
+    .checkbox {
+      width: 18px;
+      height: 18px;
+      border: 1.5px solid #9fb0c1;
+      border-radius: 5px;
+      margin-top: 1px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #ffffff;
+      flex-shrink: 0;
+    }
+
+    .checkbox-tick {
+      display: none;
+      color: #ffffff;
+      font-size: 8.5pt;
+      line-height: 1;
+    }
+
+    .item.checked .checkbox {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .item.checked .checkbox-tick {
+      display: inline;
+    }
+
+    .item-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .item-text {
+      font-size: 9.7pt;
+      line-height: 1.45;
+      color: var(--text);
+    }
+
+    .item.checked .item-text {
+      color: #275741;
+    }
+
+    .item-ref {
+      margin-top: 4px;
+      font-size: 8.2pt;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    .item-ref strong {
+      font-style: normal;
+      color: #526272;
+    }
+
+    .item-table {
+      padding: 10px 14px 14px;
+      border-bottom: 1px solid #eff3f6;
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    .item-table table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      font-size: 8.7pt;
+    }
+
+    .item-table th {
+      background: #eff4f8;
+      color: var(--accent-dark);
+      text-align: left;
+      padding: 8px 10px;
+      border: 1px solid #d9e1e8;
+    }
+
+    .item-table td {
+      padding: 8px 10px;
+      border: 1px solid #dfe6ed;
+      vertical-align: top;
+    }
+
+    .item-table tr:nth-child(even) td {
+      background: #fafcfd;
+    }
+
+    .item-table-label {
+      font-size: 9.2pt;
+      font-weight: 700;
+      color: #214a31;
+    }
+
+    .print-footer {
+      margin-top: 14px;
+      padding-top: 10px;
+      border-top: 1px solid var(--line);
+      font-size: 8.3pt;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="print-shell">
+    <div class="print-header">
+      <div class="print-label">Gestão Tributária & Compliance Fiscal</div>
+      <h1 class="print-title">${title.replace('Pleito de', '<span>Pleito de</span>')}</h1>
+      <div class="print-meta">
+        <div class="print-subtitle">Versão para impressão: ${subtitle}</div>
+        <div class="print-reference">${referenceMeta}</div>
+      </div>
+    </div>
+
+    <div class="summary-strip">
+      <div class="summary-card"><strong>Total de itens</strong><span>${totalItems}</span></div>
+      <div class="summary-card"><strong>Concluídos</strong><span>${totalChecked}</span></div>
+      <div class="summary-card"><strong>Pendentes</strong><span>${totalItems - totalChecked}</span></div>
+    </div>
+
+    ${panelBlocks.join('')}
+
+    <div class="print-footer">
+      <div>Documento preparado para impressão/PDF com layout dedicado.</div>
+      <div>Gerado em ${generatedAt}</div>
+    </div>
+  </div>
+</body>
+</html>`;
+  }
+
+  function printChecklist() {
+    const printMarkup = buildPrintDocument();
+
+    if (!printMarkup) {
+      alert('Não foi possível preparar a versão para impressão.');
+      return;
+    }
+
+    const printWindow = window.open('', '_blank', 'width=1100,height=900');
+
+    if (!printWindow) {
+      alert('O navegador bloqueou a janela de impressão. Libere pop-ups para este arquivo e tente novamente.');
+      return;
+    }
+
+    printWindow.document.open();
+    printWindow.document.write(printMarkup);
+    printWindow.document.close();
+
+    printWindow.addEventListener('load', () => {
+      printWindow.focus();
+      printWindow.print();
+    });
+  }
+
+  function formatBytesForEmail(bytes) {
+    const mb = bytes / (1024 * 1024);
+    if (mb >= 1024) return (mb / 1024).toFixed(2) + ' GB';
+    return mb.toFixed(2) + ' MB';
+  }
+
+  function buildProfessionalFormSubmitMessage({ company, email, formData, totalFiles, totalBytes, generatedLabels }) {
+    const filledEntries = Object.entries(formData || {}).filter(([, value]) => String(value || '').trim());
+    const previewLines = filledEntries.slice(0, 10).map(([key, value]) => {
+      const label = key.replace(/^n_/, '').replace(/_/g, ' ').trim();
+      const compactValue = String(value || '').replace(/\s+/g, ' ').trim();
+      return `- ${label}: ${compactValue.slice(0, 180)}${compactValue.length > 180 ? '...' : ''}`;
+    });
+
+    return [
+      'CHECKLIST BENEFICIOS FISCAIS - RESUMO EXECUTIVO',
+      `Empresa: ${company}`,
+      `Email de contato: ${email}`,
+      `Data/hora de envio: ${new Date().toLocaleString('pt-BR')}`,
+      '',
+      'Resumo do envio:',
+      `- Campos preenchidos: ${filledEntries.length}`,
+      `- Total de anexos: ${totalFiles} arquivo(s)`,
+      `- Volume de anexos: ${formatBytesForEmail(totalBytes)}`,
+      `- Arquivos gerados automaticamente: ${generatedLabels.join(', ')}`,
+      '',
+      'Destaques do formulario:',
+      previewLines.length ? previewLines.join('\n') : '- Nenhum campo textual preenchido.',
+      '',
+      'Observacao: o checklist completo segue anexado em HTML offline.'
+    ].join('\n');
+  }
+
+  /* ── MODAL: Envio por Email ────────────────────────────────── */
+  function openSubmitModal() {
+    document.getElementById('submitModal').style.display = 'flex';
+    document.getElementById('submitEmail').focus();
+  }
+
+  function closeSubmitModal() {
+    document.getElementById('submitModal').style.display = 'none';
+  }
+
+  // Fechar modal ao clicar fora
+  document.addEventListener('click', e => {
+    const modal = document.getElementById('submitModal');
+    if (modal && e.target === modal.querySelector('.modal-overlay')) {
+      closeSubmitModal();
+    }
+  });
+
+  // Fechar ao pressionar ESC
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && document.getElementById('submitModal').style.display !== 'none') {
+      closeSubmitModal();
+    }
+  });
+
+  async function submitFormViaEmail() {
+    const email = document.getElementById('submitEmail').value.trim();
+    const company = document.getElementById('submitCompany').value.trim();
+
+    if (!email || !company) {
+      alert('Por favor, preencha email e nome da empresa.');
+      return;
+    }
+
+    if (!email.includes('@')) {
+      alert('Por favor, insira um email válido.');
+      return;
+    }
+
+    // Coletar dados do formulário
+    const formData = {};
+    try {
+      const notes = JSON.parse(localStorage.getItem('checklist_notes_v1') || '{}');
+      Object.assign(formData, notes);
+    } catch(e) {}
+
+    // Coletar anexos prontos para envio
+    const { payload: attachments, missing: missingAttachments } = getAttachmentsPayload();
+    if (missingAttachments.length) {
+      alert(
+        'Alguns documentos estão apenas como referência (arquivo recarregado da sessão anterior). '
+        + 'Reanexe antes de enviar: '
+        + missingAttachments.slice(0, 5).join(', ')
+        + (missingAttachments.length > 5 ? ` e mais ${missingAttachments.length - 5}` : '')
+      );
+      return;
+    }
+
+    const { totalFiles, totalBytes } = getPayloadAttachmentStats(attachments);
+    if (totalFiles >= FORM_UPLOAD_MAX_FILES) {
+      alert('Voce ja atingiu o limite de 100 anexos. Remova alguns arquivos antes de enviar.');
+      return;
+    }
+    if (totalBytes > FORM_UPLOAD_MAX_TOTAL_SIZE) {
+      alert('Os anexos ultrapassam o limite de 100 MB por envio no FormSubmit.');
+      return;
+    }
+
+    // Mostrar progresso
+    const progress = document.getElementById('submitProgress');
+    const progressFill = document.getElementById('progressFill');
+    const progressText = document.getElementById('progressText');
+    progress.style.display = 'block';
+    const button = document.querySelector('.modal-footer .btn-gold');
+    button.disabled = true;
+
+    try {
+      // Simular progresso
+      let currentProgress = 0;
+      const progressInterval = setInterval(() => {
+        if (currentProgress < 90) {
+          currentProgress += Math.random() * 30;
+          progressFill.style.width = Math.min(currentProgress, 90) + '%';
+        }
+      }, 300);
+
+      const checklistHtmlFile = buildChecklistOfflineHtmlFile(company);
+      if (!checklistHtmlFile || !checklistHtmlFile.size) {
+        throw new Error('Nao foi possivel gerar o HTML offline do checklist para anexar no email.');
+      }
+
+      const selectedGeneratedAttachments = [
+        { field: 'attachment_html', label: 'HTML offline', file: checklistHtmlFile }
+      ];
+
+      const totalBytesWithGeneratedFiles = totalBytes + checklistHtmlFile.size;
+      if (totalBytesWithGeneratedFiles > FORM_UPLOAD_MAX_TOTAL_SIZE || (totalFiles + selectedGeneratedAttachments.length) > FORM_UPLOAD_MAX_FILES) {
+        throw new Error('Com o HTML offline do checklist, o total de anexos ultrapassa os limites do FormSubmit (100 arquivos / 100 MB). Reduza os arquivos anexados.');
+      }
+
+      // Enviar para FormSubmit
+      const buildFormSubmitPayload = (professionalMessage) => {
+        const multipartData = new FormData();
+        multipartData.append('email', email);
+        multipartData.append('_replyto', email);
+        multipartData.append('name', company);
+        multipartData.append('company', company);
+        multipartData.append('_subject', `Checklist Benefícios Fiscais - ${company}`);
+        multipartData.append('_template', 'box');
+        multipartData.append('_captcha', 'false');
+        multipartData.append('_honey', '');
+        multipartData.append('message', professionalMessage);
+        selectedGeneratedAttachments.forEach(item => {
+          multipartData.append(item.field, item.file, item.file.name);
+        });
+
+        let total = selectedGeneratedAttachments.length;
+        Object.entries(attachments).forEach(([attachKey, files]) => {
+          if (!Array.isArray(files)) return;
+          files.forEach((file, idx) => {
+            const fileName = file.name || `${attachKey}_${idx + 1}.bin`;
+            const fileType = file.type || 'application/octet-stream';
+            const fileObj = base64ToFile(file.data, fileName, fileType);
+            multipartData.append(`attachment_user_${attachKey}_${idx + 1}`, fileObj, fileName);
+            total += 1;
+          });
+        });
+
+        return { multipartData, totalAttachments: total };
+      };
+
+      const submitToFormSubmit = async () => {
+        const recipients = FORM_SUBMIT_RECIPIENTS.filter(Boolean);
+        if (!recipients.length) {
+          throw new Error('Nenhum destinatario configurado para envio.');
+        }
+
+        const professionalMessage = buildProfessionalFormSubmitMessage({
+          company,
+          email,
+          formData,
+          totalFiles: totalFiles + selectedGeneratedAttachments.length,
+          totalBytes: totalBytesWithGeneratedFiles,
+          generatedLabels: selectedGeneratedAttachments.map(item => item.label)
+        });
+
+        let totalAttachments = 0;
+        for (const recipient of recipients) {
+          const { multipartData, totalAttachments: attachmentsCount } = buildFormSubmitPayload(professionalMessage);
+          totalAttachments = attachmentsCount;
+          const endpoint = FORM_SUBMIT_ENDPOINT_BASE + encodeURIComponent(recipient);
+          await fetch(endpoint, {
+            method: 'POST',
+            mode: 'no-cors',
+            body: multipartData
+          });
+        }
+
+        // With no-cors the response is opaque; if fetch resolves, request was dispatched.
+        return {
+          ok: true,
+          totalAttachments,
+          generatedAttachmentLabels: selectedGeneratedAttachments.map(item => item.label),
+          recipientsCount: recipients.length
+        };
+      };
+
+      const sendResult = await submitToFormSubmit();
+
+      clearInterval(progressInterval);
+      progressFill.style.width = '100%';
+
+      if (sendResult.ok) {
+        progressText.textContent = '✅ Enviado com sucesso!';
+        setTimeout(() => {
+          alert(`✅ Formulário enviado com sucesso!\\n\\nEmail: ${email}\\nEmpresa: ${company}\\nDestinatários: ${sendResult.recipientsCount}\\nAnexos gerados: ${sendResult.generatedAttachmentLabels.join(' + ')}\\n\\nDocumentos enviados: ${sendResult.totalAttachments} arquivo(s) por destinatário`);
+          closeSubmitModal();
+          document.getElementById('submitEmail').value = '';
+          document.getElementById('submitCompany').value = '';
+          progress.style.display = 'none';
+          button.disabled = false;
+        }, 1000);
+      } else {
+        throw new Error(sendResult.message);
+      }
+    } catch (error) {
+      progressFill.style.width = '0%';
+      progressText.textContent = '❌ Erro ao enviar';
+      button.disabled = false;
+      console.error('Erro ao enviar:', error);
+      
+      // Verificar se é erro de conexão
+      if (error.message.includes('Failed to fetch')) {
+        alert('❌ Erro: Não consegui conectar ao FormSubmit.\\n\\nVerifique sua conexão e tente novamente.');
+      } else if (/activate|confirm|verification|first-time-use/i.test(error.message || '')) {
+        alert('⚠️ O FormSubmit exige confirmação inicial do email de destino.\n\nVerifique sua caixa de entrada e confirme o formulário, depois tente novamente.');
+      } else {
+        alert(`❌ Erro ao enviar: ${error.message}`);
+      }
+      
+      setTimeout(() => {
+        progress.style.display = 'none';
+      }, 2000);
+    }
+  }
+
+  // Permitir envio ao pressionar Enter
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && document.getElementById('submitModal').style.display !== 'none' && e.ctrlKey) {
+      submitFormViaEmail();
+    }
+  });
+
+  window.addEventListener('resize', syncStickyOffsets);
+
+  syncStickyOffsets();
+  updateProgress();
+  initEditableTables();
+  initNoteAreas();
+  initAttachZones();
+</script>
+</body>
+</html>
